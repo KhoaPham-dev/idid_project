@@ -47,7 +47,7 @@ export class RenderLogin extends React.Component{
                     </form>
                     <hr/>
                     <div className="text-center">
-                      <Link className="small" to="forgot-password.html">Forgot Password?</Link>
+                      <Link className="small" to="/forget">Forgot Password?</Link>
                     </div>
                     <div className="text-center">
                       <Link className="small" to="/signup">Create an Account!</Link>
