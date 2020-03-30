@@ -18,6 +18,7 @@ class App extends React.Component{
       }}/>
       <Route exact path="/logout" component={Logout} />
       <Route exact path="/signup" component={Signup} />
+      <Route exact path="/forget" component={Forget} />
       </BrowserRouter>
     )
   }
