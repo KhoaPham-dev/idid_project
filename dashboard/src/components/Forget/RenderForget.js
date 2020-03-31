@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Forget.css';
 export const RenderForget = (props) => {
 	let classForget = props.classForget;
 	let classNotForget = props.classNotForget;

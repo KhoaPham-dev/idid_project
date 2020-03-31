@@ -5,6 +5,7 @@ import {Login} from '../Login/Login';
 import  {Dashboard}  from '../Dashboard/Dashboard';
 import {Logout} from '../Logout/Logout';
 import { Signup } from '../Signup/Signup';
+import {Forget } from '../Forget/Forget';
 class App extends React.Component{
   
   render(){

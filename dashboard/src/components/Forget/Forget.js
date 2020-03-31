@@ -33,7 +33,7 @@ export class Forget extends React.Component {
 	}
 	render() {
 		if (this.state.redirect === true) {
-			return <RenderisNotForget classForget="row isDone" classNotForget="row"/>
+			return <RenderForget classForget="row isDone" classNotForget="row"/>
 		}
 		return <RenderForget sendPasswordResetEmail={this.sendPasswordResetEmail} 
 			classForget="row" classNotForget="row isDone"/>;
