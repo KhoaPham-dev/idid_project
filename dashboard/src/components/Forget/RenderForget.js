@@ -29,10 +29,10 @@ export const RenderForget = (props) => {
 										</form>
 										<hr />
 										<div className="text-center">
-											<a className="small" href="/signup">Create an Account!</a>
+											<Link className="small" to="/signup">Create an Account!</Link>
 										</div>
 										<div className="text-center">
-											<a className="small" href="/login">Already have an account? Login!</a>
+											<Link className="small" to="/login">Already have an account? Login!</Link>
 										</div>
 									</div>
 								</div>
@@ -45,7 +45,7 @@ export const RenderForget = (props) => {
 										</div>
 										<hr />
 										<div className="text-center">
-											<a className="small" href="/">Return to home page</a>
+											<Link className="small" to="/">Return to home page</Link>
 										</div>
 									</div>
 								</div>

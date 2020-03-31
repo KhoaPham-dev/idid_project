@@ -1,7 +1,6 @@
 import React from 'react';
 import { app } from '../base';
 import { RenderForget } from './RenderForget';
-import { RenderisNotForget } from './RenderisNotForget';
 
 
 export class Forget extends React.Component {
