@@ -17,8 +17,7 @@ function checkValidInput(firstName, lastName, email, password, repeatPassword){
   if(password.length <= 6) throw new handleErrorMessage("Password should be longer!");
   if(password !== repeatPassword) throw new handleErrorMessage("Repeat password does not match password");
 }
-function uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname){
-  let userID = randomId();
+function uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID){
   let formData = new FormData();
   formData.append('file', imageFile);
   formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -37,18 +36,16 @@ function uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, full
         username: username,
         email: email,
         fullname: fullname,
-        profile_picture : res.data.url
+        profile_picture : res.data.url,
+        permission: "user",
+        joined_contest: {}
       })
   })
   .catch((error)=>{
     alert(error.message);
   })
 }
-function randomId(){
-  let max = 10999;
-  let min = 1000;
-  return `${Date.now()}${Math.floor(Math.random()*(max-min)+min)}`; //Random number: date.now + 1000 - 9999
-}
+
 export class Signup extends React.Component{
     constructor(props){
         super(props);
@@ -75,9 +72,9 @@ export class Signup extends React.Component{
         app.auth().createUserWithEmailAndPassword(email, password)
         .then((result)=>{
           console.log(result);
-
+          let userID = result.user.uid;
           //Add to database
-          return uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname);
+          return uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID);
         })
         .then((res)=>{
           this.setState({

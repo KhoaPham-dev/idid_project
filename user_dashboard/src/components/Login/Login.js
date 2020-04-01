@@ -1,5 +1,5 @@
 import React from 'react';
-import {app, facebookProvider, googleProvider} from '../base';
+import {app, facebookProvider, googleProvider, db} from '../base';
 import { Redirect} from 'react-router-dom';
 import { RenderLogin } from './RenderLogin';
 
@@ -20,16 +20,17 @@ export class Login extends React.Component{
   }
   
   loginWithGoogleAccount(){
-    app.auth().signInWithPopup(googleProvider).then((result, error)=> {
+    app.auth().signInWithPopup(googleProvider)
+    .then((result, error)=> {
       // Handle Errors here.
       if(error){
-        var errorMessage = error.message;
+        //var errorMessage = error.message;
         // The email of the user's account used.
         // var email = error.email;
         // // The firebase.auth.AuthCredential type that was used.
         // var credential = error.credential;
         // ...
-        alert(errorMessage);
+        throw new handleErrorLogin(error);
       }
       else{
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -37,21 +38,76 @@ export class Login extends React.Component{
         // // The signed-in user info.
         // var user = result.user;
         // ...
-        this.setState({redirect: true})
+        console.log(result);
+        return result;
       }  
-    });
+    })
+    .then((userProfile)=>{
+      if(userProfile.additionalUserInfo.isNewUser){
+        let userID = userProfile.user.uid;
+        let email = userProfile.additionalUserInfo.profile.email;
+        let profile_picture = userProfile.additionalUserInfo.profile.picture;
+        let fullname = userProfile.additionalUserInfo.profile.name;
+        return db.ref('users/' + userID).set({
+          id: userID,
+          username: email,
+          email: email,
+          fullname: fullname,
+          profile_picture : profile_picture,
+          permission: "user",
+          joined_contest: {}
+        })
+      }
+      else return;
+    })
+    .then((res)=>{
+      console.log(res);
+      this.setState({redirect: true})
+    })
+    .catch((error)=>{
+      alert(error.message);
+    })
+
   }
 
   loginWithFacebookAccount(){
     app.auth().signInWithPopup(facebookProvider)
-      .then((user, error) => {
+      .then((result, error) => {
         if (error) {
-          alert(error.message);
-        } else {
-          this.setState({ redirect: true })
+          throw new handleErrorLogin(error);
+        } 
+        else {
+          console.log(result);
+        return result;
         
         }
       })
+      .then((userProfile)=>{
+        if(userProfile.additionalUserInfo.isNewUser){
+          let userID = userProfile.user.uid;
+          let email = userProfile.additionalUserInfo.profile.email;
+          let profile_picture = userProfile.additionalUserInfo.profile.picture;
+          let fullname = userProfile.additionalUserInfo.profile.name;
+          return db.ref('users/' + userID).set({
+            id: userID,
+            username: email,
+            email: email,
+            fullname: fullname,
+            profile_picture : profile_picture,
+            permission: "user",
+            joined_contest: {}
+          })
+        }
+        else return;
+      })
+      .then((res)=>{
+        console.log(res);
+        this.setState({redirect: true})
+      })
+      .catch((error)=>{
+        alert(error.message);
+      })
+
   }
   loginWithEmailAndPassword(event){
     event.preventDefault()
@@ -75,6 +131,7 @@ export class Login extends React.Component{
       .then((user) => {
         if (user && user.user.email) {
           document.querySelector("form").reset();
+          console.log(user);
           this.setState({redirect: true})
         }
         else{
