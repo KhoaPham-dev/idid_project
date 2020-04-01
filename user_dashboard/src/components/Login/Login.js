@@ -73,12 +73,12 @@ export class Login extends React.Component{
         }
       })
       .then((user) => {
-        if (user && user.email) {
+        if (user && user.user.email) {
           document.querySelector("form").reset();
           this.setState({redirect: true})
         }
         else{
-          throw handleErrorLogin("Email or password is wrong!");
+          throw new handleErrorLogin("Email or password is wrong!");
         }
       })
       .catch((error) => {
@@ -88,7 +88,7 @@ export class Login extends React.Component{
   }
   componentWillMount(){
     this.removeAuthListener = app.auth().onAuthStateChanged((user)=>{
-      console.log(user);
+      //console.log(user);
       if(user){
         this.setState({
           redirect : true
