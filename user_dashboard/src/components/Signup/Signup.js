@@ -12,8 +12,8 @@ function handleErrorMessage(message){
   this.message = message;
 }
 
-function checkValidInput(firstName, lastName, email, password, repeatPassword){
-  if(firstName === "" || lastName === "" || email === "" || password === "" || repeatPassword === "") throw new handleErrorMessage("Form must be filled!");
+function checkValidInput(firstName, lastName, email, password, repeatPassword, imageFile){
+  if(firstName === "" || lastName === "" || email === "" || password === "" || repeatPassword === "" || !imageFile) throw new handleErrorMessage("Form must be filled!");
   if(password.length <= 6) throw new handleErrorMessage("Password should be longer!");
   if(password !== repeatPassword) throw new handleErrorMessage("Repeat password does not match password");
 }
@@ -68,7 +68,7 @@ export class Signup extends React.Component{
       const repeatPassword = document.querySelector('input[name="repeat-password"]').value;
       const imageFile = document.querySelector('input[name="file"]').files[0];
       try {
-        checkValidInput(fullname, username, email, password, repeatPassword);
+        checkValidInput(fullname, username, email, password, repeatPassword, imageFile);
         app.auth().createUserWithEmailAndPassword(email, password)
         .then((result)=>{
           console.log(result);
