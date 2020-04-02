@@ -4,6 +4,7 @@ import {app} from '../base';
 import { RenderSignup } from './RenderSignup';
 import { Redirect } from 'react-router-dom';
 import { db } from '../base';
+import error_extension_img from './error_extension.jpg';
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/idid/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = 'preset1';
@@ -11,7 +12,11 @@ const CLOUDINARY_UPLOAD_PRESET = 'preset1';
 function handleErrorMessage(message){
   this.message = message;
 }
-
+function checkFileExtension(filename){
+  let extension = filename.split('.').pop();
+  if(extension === "png" || extension === "jpg" || extension === "gif") return true;
+  return false;
+}
 function checkValidInput(firstName, lastName, email, password, repeatPassword, imageFile){
   if(firstName === "" || lastName === "" || email === "" || password === "" || repeatPassword === "" || !imageFile) throw new handleErrorMessage("Form must be filled!");
   if(password.length <= 6) throw new handleErrorMessage("Password should be longer!");
@@ -51,7 +56,7 @@ export class Signup extends React.Component{
         super(props);
         this.state = {
             redirect: false,
-            imgSrc: "https://source.unsplash.com/Mv9hjnEUHR4/600x800",
+            imgSrc: 'https://source.unsplash.com/Mv9hjnEUHR4/600x800',
         }
         this.signUpWithEmailAndPassword = this.signUpWithEmailAndPassword.bind(this);
         this.handleChangeFileInput = this.handleChangeFileInput.bind(this);
@@ -88,18 +93,23 @@ export class Signup extends React.Component{
         alert(error.message);
       }
     }
-    handleChangeFileInput(event){
+    handleChangeFileInput(event){   //note: for profile picture
       // Assuming only image
       var file =  event.target.files[0];
       var reader = new FileReader();
-      var url = reader.readAsDataURL(file);
-      console.log(url);
+      if(file && checkFileExtension(file.name)){
+      reader.readAsDataURL(file);
        reader.onloadend = function (e) {
           this.setState({
-              imgSrc: [reader.result]
+              imgSrc: reader.result
           })
         }.bind(this);
-
+      }
+      else {
+        this.setState({
+          imgSrc: error_extension_img
+        })
+      }
     }
     previewProfilePicture(){
       document.getElementsByClassName("register-image")[0].style.backgroundImage = `url(${this.state.imgSrc})`;

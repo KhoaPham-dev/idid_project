@@ -44,7 +44,7 @@ export class RenderSignup extends React.Component {
                     </div>
                     </div>
 
-                    <input onChange={this.props.handleChangeFileInput} className="inputFile" name="file" type="file" id="file" aria-label="File browser example"/>
+                    <input onChange={this.props.handleChangeFileInput} className="inputFile" name="file" type="file" accept="image/jpg, image/png, image/gif" id="file" aria-label="File browser example"/>
                     <label className="labelFile" htmlFor="file"> Choose a profile picture…</label>
 
                     <button  type="submit" className="btn btn-primary btn-user btn-block">
