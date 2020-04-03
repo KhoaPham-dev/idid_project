@@ -8,6 +8,7 @@ export class RenderSignup extends React.Component {
     componentDidUpdate(){
         this.props.previewProfilePicture();
     }
+
     render(){
     
     return(
@@ -21,7 +22,8 @@ export class RenderSignup extends React.Component {
             <div className="col-lg-7">
                 <div className="p-5">
                 <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">Create an Account!</h1>
+                {this.props.isLoading ?<h1 className="h4 text-gray-900 mb-4"><i className="fa fa-spinner fa-spin"></i>Loading...</h1> 
+                :<h1 className="h4 text-gray-900 mb-4">Create an Account!</h1>}
                 </div>
                 <form className="user" onSubmit={this.props.signUpWithEmailAndPassword}>
                     <div className="form-group row">

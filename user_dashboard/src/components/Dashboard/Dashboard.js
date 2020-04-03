@@ -28,14 +28,14 @@ export class Dashboard extends React.Component{
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    if(this.state.authenticated === nextState.authenticated) return false;
-    else return true;
-  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if(this.state.authenticated === nextState.authenticated) return false;
+  //   else return true;
+  // }
 
-  componentDidUpdate(prevProps, prevState){
+  // componentDidUpdate(prevProps, prevState){
      
-  }
+  // }
 
   componentWillUnmount() {
     this.removeAuthListener();
@@ -46,7 +46,9 @@ export class Dashboard extends React.Component{
       return <Redirect to={'/login'} />;
     }
     return(
-      <RenderDashboard />
+      this.state.currentUser ?
+      <RenderDashboard profilePicture={this.state.currentUser.photoURL} displayName={this.state.currentUser.displayName} />
+      : <RenderDashboard />
     )
   }
 }

@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { db } from '../base';
 import error_extension_img from './error_extension.jpg';
 
+
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/idid/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = 'preset1';
 //checkValidInput
@@ -22,34 +23,7 @@ function checkValidInput(firstName, lastName, email, password, repeatPassword, i
   if(password.length <= 6) throw new handleErrorMessage("Password should be longer!");
   if(password !== repeatPassword) throw new handleErrorMessage("Repeat password does not match password");
 }
-function uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID){
-  let formData = new FormData();
-  formData.append('file', imageFile);
-  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-  axios({
-    url: CLOUDINARY_URL,
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    data: formData
-})
-  .then(function(res){
-      db.ref('users/' + userID).set({
-        id: userID,
-        username: username,
-        email: email,
-        fullname: fullname,
-        profile_picture : res.data.url,
-        permission: "user",
-        joined_contest: {}
-      })
-  })
-  .catch((error)=>{
-    alert(error.message);
-  })
-}
 
 export class Signup extends React.Component{
     constructor(props){
@@ -57,12 +31,50 @@ export class Signup extends React.Component{
         this.state = {
             redirect: false,
             imgSrc: 'https://source.unsplash.com/Mv9hjnEUHR4/600x800',
+            isLoading: false
         }
         this.signUpWithEmailAndPassword = this.signUpWithEmailAndPassword.bind(this);
         this.handleChangeFileInput = this.handleChangeFileInput.bind(this);
         this.previewProfilePicture = this.previewProfilePicture.bind(this);
     }
-
+    async uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID){
+      let formData = new FormData();
+      formData.append('file', imageFile);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      await axios({
+        url: CLOUDINARY_URL,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: formData
+      })
+      .then(async(res)=>{
+            await db.ref('users/' + userID).set({
+            id: userID,
+            username: username,
+            email: email,
+            fullname: fullname,
+            profile_picture : res.data.url,
+            permission: "user",
+            joined_contest: {}
+          })
+        return res.data.url;
+      })
+      .then((profilePictureUrl)=>{
+        return this.removeAuthListener = app.auth().onAuthStateChanged(async (user)=>{
+          if (user) {
+              await user.updateProfile({
+              displayName: username,
+              photoURL: profilePictureUrl
+            })
+          }
+        });
+      })
+      .catch((error)=>{
+        alert(error.message);
+      })
+    }
     signUpWithEmailAndPassword(event){
       event.preventDefault();
   
@@ -74,23 +86,37 @@ export class Signup extends React.Component{
       const imageFile = document.querySelector('input[name="file"]').files[0];
       try {
         checkValidInput(fullname, username, email, password, repeatPassword, imageFile);
+        this.setState({
+          isLoading: true
+        })
         app.auth().createUserWithEmailAndPassword(email, password)
         .then((result)=>{
           console.log(result);
           let userID = result.user.uid;
           //Add to database
-          return uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID);
+          //return profile picture url and username
+          return this.uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID); 
         })
         .then((res)=>{
-          this.setState({
-            redirect: true
-          })
+          //wait for response from update profile
+          setTimeout(()=>{
+            this.setState({
+              redirect: true,
+              isLoading: false
+            })
+          }, 1000)
         })
         .catch((error)=> {
           alert(error.message);
+          this.setState({
+            isLoading: false
+          })
         });
       } catch (error) {
         alert(error.message);
+        this.setState({
+          isLoading: false
+        })
       }
     }
     handleChangeFileInput(event){   //note: for profile picture
@@ -114,10 +140,14 @@ export class Signup extends React.Component{
     previewProfilePicture(){
       document.getElementsByClassName("register-image")[0].style.backgroundImage = `url(${this.state.imgSrc})`;
     }
+
+    componentWillUnmount() {
+      this.removeAuthListener();
+    }
     render(){
       if(this.state.redirect === true){
-        return <Redirect to={'/login'} />
+        return <Redirect to={'/'} />
       }
-        return <RenderSignup previewProfilePicture={this.previewProfilePicture} handleChangeFileInput={this.handleChangeFileInput} signUpWithEmailAndPassword={this.signUpWithEmailAndPassword} />;
+        return <RenderSignup isLoading={this.state.isLoading} previewProfilePicture={this.previewProfilePicture} handleChangeFileInput={this.handleChangeFileInput} signUpWithEmailAndPassword={this.signUpWithEmailAndPassword} />;
     }
 }
