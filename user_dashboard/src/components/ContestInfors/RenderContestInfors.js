@@ -1,112 +1,120 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import botImg from './botImg.png';
+import './RenderContestInfors.css';
 export class RenderContestInfors extends React.Component{
     render(){
         return(
             <React.Fragment>
-            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                  <h1 className="h3 mb-0 text-gray-800">Cuộc thi đang có</h1>      
+            <div className="mb-4" style={{"textAlign": "center"}}>
+                <div className="h3 mb-0 text-gray-900">
+                  <span><strong>Sự kiện nổi bật</strong></span>
+                </div>  
             </div>
             <div className="row">
-      
-            <div className="col-xl-3 col-md-6 mb-4">
-              <div className="card border-left-primary shadow h-100 py-2">
-                <div className="card-body">
-                  <div className="row no-gutters align-items-center">
-                    <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div className="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div className="col-auto">
-                      <i className="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-   
-            <div className="col-xl-3 col-md-6 mb-4">
+            <div className="col-md-4 mb-4">
               <div className="card border-left-success shadow h-100 py-2">
+              <div className="card-header"><img src={botImg} style={{"height": "100%", "width":"100%"}} /></div>
                 <div className="card-body">
-                  <div className="row no-gutters align-items-center">
-                    <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                      <div className="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div className="col-auto">
-                      <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-       
-            <div className="col-xl-3 col-md-6 mb-4">
-              <div className="card border-left-info shadow h-100 py-2">
-                <div className="card-body">
-                  <div className="row no-gutters align-items-center">
-                    <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                      <div className="row no-gutters align-items-center">
-                        <div className="col-auto">
-                          <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                  <div className="row no-gutters align-items-center padding-10">
+                    <div className="table w-100 margin-bottom-0">
+                        <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
+                            <strong>Battle Of Tanks 2019</strong>
                         </div>
-                        <div className="col">
-                          <div className="progress progress-sm mr-2">
-                            <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
+                    </div>
+                    <div className="col">
+                    <div className="text-xs font-weight-bold text-success text-uppercase mb-1">5/90</div>
+                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                      <button type="button" className="btn btn-info">Đăng ký</button>
                       </div>
                     </div>
-                    <div className="col-auto">
-                      <i className="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
+                    <div className="calendar">
+                        <i className="fas fa-calendar fa-2x text-black-800"></i>
+                        <div className="start-date">12/7/2020</div>
+                    </div>          
                   </div>
                 </div>
               </div>
             </div>
-
-            <div className="col-xl-3 col-md-6 mb-4">
-              <div className="card border-left-info shadow h-100 py-2">
+         
+            <div className="col-md-4 mb-4">
+              <div className="card border-left-success shadow h-100 py-2">
+              <div className="card-header"><img src={botImg} style={{"height": "100%", "width":"100%"}} /></div>
                 <div className="card-body">
-                  <div className="row no-gutters align-items-center">
-                    <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                      <div className="row no-gutters align-items-center">
-                        <div className="col-auto">
-                          <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                  <div className="row no-gutters align-items-center padding-10">
+                    <div className="table w-100 margin-bottom-0">
+                        <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
+                            <strong>Battle Of Tanks 2019</strong>
                         </div>
-                        <div className="col">
-                          <div className="progress progress-sm mr-2">
-                            <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
+                    </div>
+                    <div className="col">
+                    <div className="text-xs font-weight-bold text-success text-uppercase mb-1">5/90</div>
+                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                      <button type="button" className="btn btn-info">Đăng ký</button>
                       </div>
                     </div>
-                    <div className="col-auto">
-                      <i className="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
+                    <div className="calendar">
+                        <i className="fas fa-calendar fa-2x text-black-800"></i>
+                        <div className="start-date">12/7/2020</div>
+                    </div>          
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 col-md-6 mb-4">
-              <div className="card border-left-warning shadow h-100 py-2">
+         
+
+            <div className="col-md-4 mb-4">
+              <div className="card border-left-success shadow h-100 py-2">
+              <div className="card-header"><img src={botImg} style={{"height": "100%", "width":"100%"}} /></div>
                 <div className="card-body">
-                  <div className="row no-gutters align-items-center">
-                    <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                      <div className="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                  <div className="row no-gutters align-items-center padding-10">
+                    <div className="table w-100 margin-bottom-0">
+                        <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
+                            <strong>Battle Of Tanks 2019</strong>
+                        </div>
                     </div>
-                    <div className="col-auto">
-                      <i className="fas fa-comments fa-2x text-gray-300"></i>
+                    <div className="col">
+                    <div className="text-xs font-weight-bold text-success text-uppercase mb-1">5/90</div>
+                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                      <button type="button" className="btn btn-info">Đăng ký</button>
+                      </div>
                     </div>
+                    <div className="calendar">
+                        <i className="fas fa-calendar fa-2x text-black-800"></i>
+                        <div className="start-date">12/7/2020</div>
+                    </div>          
                   </div>
                 </div>
               </div>
             </div>
+         
+
+            <div className="col-md-4 mb-4">
+              <div className="card border-left-success shadow h-100 py-2">
+              <div className="card-header"><img src={botImg} style={{"height": "100%", "width":"100%"}} /></div>
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center padding-10">
+                    <div className="table w-100 margin-bottom-0">
+                        <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
+                            <strong>Battle Of Tanks 2019</strong>
+                        </div>
+                    </div>
+                    <div className="col">
+                    <div className="text-xs font-weight-bold text-success text-uppercase mb-1">5/90</div>
+                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                      <button type="button" className="btn btn-info">Đăng ký</button>
+                      </div>
+                    </div>
+                    <div className="calendar">
+                        <i className="fas fa-calendar fa-2x text-black-800"></i>
+                        <div className="start-date">12/7/2020</div>
+                    </div>          
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+
           </div>
           </React.Fragment>
         )

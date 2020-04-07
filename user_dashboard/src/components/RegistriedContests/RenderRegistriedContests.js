@@ -4,8 +4,10 @@ export class RenderRegistriedContests extends Component {
     render() {
         return (
             <React.Fragment>
-            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 className="h3 mb-0 text-gray-800">Cuộc thi đã đăng ký</h1>      
+            <div className="mb-4" style={{"textAlign": "center"}}>
+                <div class="h3 mb-0 text-gray-900">
+                  <span><strong>Đã đăng ký</strong></span>
+                </div>  
             </div>
             <div className="row">
       

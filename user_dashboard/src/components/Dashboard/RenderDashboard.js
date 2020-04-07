@@ -3,8 +3,8 @@ import {Link} from 'react-router-dom';
 import {ContestResults} from '../ContestResults/ContestResults';
 import {ContestInfors} from '../ContestInfors/ContestInfors';
 import {RegistriedContests} from '../RegistriedContests/RegistriedContests';
-import Skeleton from 'react-loading-skeleton';
 import './RenderDashboard.css';
+import $ from 'jquery';
 export class RenderDashboard extends React.Component{
     handleChangeContent(e){
       this.props.changeRenderContent(e.target.name);
@@ -24,8 +24,17 @@ export class RenderDashboard extends React.Component{
       }
     }
     render(){
+      $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+         
+        };
+      })
         return(   
+         
         <React.Fragment>
+         
         <div id="wrapper">
           <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       
@@ -64,8 +73,8 @@ export class RenderDashboard extends React.Component{
               <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
                   <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestInfors" value="Sắp diễn ra"/>
-                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestResults" value="Đã đăng ký"/>
-                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="RegistriedContests" value="Kết quả thi"/>
+                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="RegistriedContests" value="Đã đăng ký"/>
+                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestResults" value="Kết quả thi"/>
                 </div>
               </div>
             </li>
@@ -97,7 +106,7 @@ export class RenderDashboard extends React.Component{
               Khác
             </div>
             <li className="nav-item">                 
-              <Link className="nav-link"  data-toggle="modal" data-target="#logoutModal">
+              <Link className="nav-link" to=""  data-toggle="modal" data-target="#logoutModal">
                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 <span>Đăng xuất</span></Link>
             </li>
@@ -114,7 +123,7 @@ export class RenderDashboard extends React.Component{
       
    
             <div className="text-center d-none d-md-inline">
-              <button className="rounded-circle border-0" id="sidebarToggle"></button>
+              <button className="rounded-circle border-0" style={{cursor: "pointer"}} id="sidebarToggle"></button>
             </div>
       
           </ul>
@@ -328,9 +337,9 @@ export class RenderDashboard extends React.Component{
         {/* <!-- End of Page Wrapper --> */}
       
         {/* <!-- Scroll to Top Button--> */}
-        <Link className="scroll-to-top rounded" to="#page-top">
+        <a className="scroll-to-top rounded" href="#page-top">
           <i className="fas fa-angle-up"></i>
-        </Link>
+        </a>
       
         {/* <!-- Logout Modal--> */}
         <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
