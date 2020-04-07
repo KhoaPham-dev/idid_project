@@ -1,6 +1,28 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {ContestResults} from '../ContestResults/ContestResults';
+import {ContestInfors} from '../ContestInfors/ContestInfors';
+import {RegistriedContests} from '../RegistriedContests/RegistriedContests';
+import Skeleton from 'react-loading-skeleton';
+import './RenderDashboard.css';
 export class RenderDashboard extends React.Component{
+    handleChangeContent(e){
+      this.props.changeRenderContent(e.target.name);
+    }
+    changeContent(){
+      switch (this.props.renderContent) {
+        case "ContestInfors":
+          return <ContestInfors/>
+        case "ContestResults":
+          return <ContestResults/>
+        case "RegistriedContests":
+          return <RegistriedContests/>
+
+        //Show error 404 page
+        default:
+          return null
+      }
+    }
     render(){
         return(   
         <React.Fragment>
@@ -12,7 +34,7 @@ export class RenderDashboard extends React.Component{
               <div className="sidebar-brand-icon rotate-n-15">
                 <i className="fas fa-laugh-wink"></i>
               </div>
-              <div className="sidebar-brand-text mx-3">Dashboard</div>
+              <div className="sidebar-brand-text mx-3">Xin chào!</div>
             </Link>
       
    
@@ -22,7 +44,7 @@ export class RenderDashboard extends React.Component{
             <li className="nav-item active">
               <Link className="nav-link" to="/">
                 <i className="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></Link>
+                <span>Bảng điều khiển</span></Link>
             </li>
       
    
@@ -30,81 +52,61 @@ export class RenderDashboard extends React.Component{
       
   
             <div className="sidebar-heading">
-              Interface
+              Cuộc thi
             </div>
       
     
             <li className="nav-item">
               <Link className="nav-link collapsed" to="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i className="fas fa-fw fa-cog"></i>
-                <span>Components</span>
+                <span>Thông tin các cuộc thi</span>
               </Link>
               <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                  <h6 className="collapse-header">Custom Components:</h6>
-                  <Link className="collapse-item" to="buttons.html">Buttons</Link>
-                  <Link className="collapse-item" to="cards.html">Cards</Link>
+                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestInfors" value="Sắp diễn ra"/>
+                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestResults" value="Đã đăng ký"/>
+                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="RegistriedContests" value="Kết quả thi"/>
                 </div>
               </div>
             </li>
-      
-     
-            <li className="nav-item">
-              <Link className="nav-link collapsed" to="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <i className="fas fa-fw fa-wrench"></i>
-                <span>Utilities</span>
-              </Link>
-              <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div className="bg-white py-2 collapse-inner rounded">
-                  <h6 className="collapse-header">Custom Utilities:</h6>
-                  <Link className="collapse-item" to="utilities-color.html">Colors</Link>
-                  <Link className="collapse-item" to="utilities-border.html">Borders</Link>
-                  <Link className="collapse-item" to="utilities-animation.html">Animations</Link>
-                  <Link className="collapse-item" to="utilities-other.html">Other</Link>
-                </div>
-              </div>
-            </li>
-      
   
             <hr className="sidebar-divider" />
       
   
             <div className="sidebar-heading">
-              Addons
+              Tài khoản
             </div>
       
   
             <li className="nav-item">
               <Link className="nav-link collapsed" to="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                 <i className="fas fa-fw fa-folder"></i>
-                <span>Pages</span>
+                <span>Thông tin cá nhân</span>
               </Link>
               <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                  <h6 className="collapse-header">Login Screens:</h6>
-                  <Link className="collapse-item" to="login.html">Login</Link>
-                  <Link className="collapse-item" to="register.html">Register</Link>
-                  <Link className="collapse-item" to="forgot-password.html">Forgot Password</Link>
-                  <div className="collapse-divider"></div>
-                  <h6 className="collapse-header">Other Pages:</h6>
-                  <Link className="collapse-item" to="404.html">404 Page</Link>
-                  <Link className="collapse-item" to="blank.html">Blank Page</Link>
+                  <h6 className="collapse-header">Chỉnh sửa thông tin</h6>
+                  <Link className="collapse-item" to="register.html">Profile</Link>
+                  <Link className="collapse-item" to="login.html">Thay đổi email</Link>
+                  <Link className="collapse-item" to="register.html">Thay đổi mật khẩu</Link>
                 </div>
               </div>
             </li>
       
-   
-            <li className="nav-item">
-              <Link className="nav-link" to="charts.html">
-                <i className="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></Link>
+            <div className="sidebar-heading">
+              Khác
+            </div>
+            <li className="nav-item">                 
+              <Link className="nav-link"  data-toggle="modal" data-target="#logoutModal">
+                <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                <span>Đăng xuất</span></Link>
             </li>
       
   
             <li className="nav-item">
-              <Link className="nav-link" to="tables.html">
-                <i className="fas fa-fw fa-table"></i>
-                <span>Tables</span></Link>
+              <Link className="nav-link" to="">
+                <i className="fas fa-fw fa-mobile"></i>
+                <span>Liên hệ BTC</span></Link>
             </li>
       
   
@@ -301,6 +303,8 @@ export class RenderDashboard extends React.Component{
       
               </nav>
               <div className="container-fluid">
+                {/* Render Content */}
+                {this.changeContent()}
               </div>
               {/* <!-- /.container-fluid --> */}
       

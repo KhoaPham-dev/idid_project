@@ -7,9 +7,10 @@ export class Dashboard extends React.Component{
     super(props);
     this.state = {
       authenticated: true,
-      currentUser: null
+      currentUser: null,
+      renderContent: "ContestInfors"
     }
-
+    this.changeRenderContent = this.changeRenderContent.bind(this);
   }
   
   componentWillMount(){
@@ -28,14 +29,11 @@ export class Dashboard extends React.Component{
     })
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   if(this.state.authenticated === nextState.authenticated) return false;
-  //   else return true;
-  // }
-
-  // componentDidUpdate(prevProps, prevState){
-     
-  // }
+  changeRenderContent(content){
+    this.setState({
+      renderContent: content
+    })
+  }
 
   componentWillUnmount() {
     this.removeAuthListener();
@@ -47,7 +45,11 @@ export class Dashboard extends React.Component{
     }
     return(
       this.state.currentUser ?
-      <RenderDashboard profilePicture={this.state.currentUser.photoURL} displayName={this.state.currentUser.displayName} />
+      <RenderDashboard  profilePicture={this.state.currentUser.photoURL}
+                        displayName={this.state.currentUser.displayName} 
+                        changeRenderContent = {this.changeRenderContent}
+                        renderContent = {this.state.renderContent}
+                        />
       : <RenderDashboard />
     )
   }
