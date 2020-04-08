@@ -6,11 +6,14 @@ import  {Dashboard}  from '../Dashboard/Dashboard';
 import {Logout} from '../Logout/Logout';
 import { Signup } from '../Signup/Signup';
 import {Forget } from '../Forget/Forget';
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css'
 class App extends React.Component{
   
   render(){
     return(
       <BrowserRouter>
+      <ReactNotification />
       <Route exact path="/" render={(props=>{
         return <Dashboard />
       })} />

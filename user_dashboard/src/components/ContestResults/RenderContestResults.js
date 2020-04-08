@@ -5,7 +5,7 @@ export class RenderContestResults extends Component {
         return (
             <React.Fragment>
             <div className="mb-4" style={{"textAlign": "center"}}>
-                <div class="h3 mb-0 text-gray-900">
+                <div className="h3 mb-0 text-gray-900">
                   <span><strong>Kết quả thi</strong></span>
                 </div>  
             </div>

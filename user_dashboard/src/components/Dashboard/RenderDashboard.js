@@ -12,7 +12,10 @@ export class RenderDashboard extends React.Component{
     changeContent(){
       switch (this.props.renderContent) {
         case "ContestInfors":
-          return <ContestInfors/>
+          return <ContestInfors contests={this.props.contests} 
+                                userId={this.props.userId}
+                                registryContest={this.props.registryContest}
+                                />
         case "ContestResults":
           return <ContestResults/>
         case "RegistriedContests":
