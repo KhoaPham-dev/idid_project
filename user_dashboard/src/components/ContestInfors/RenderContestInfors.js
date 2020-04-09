@@ -1,10 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './RenderContestInfors.css';
-
+import Popup from "reactjs-popup";
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
+import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
 export class RenderContestInfors extends React.Component{
   handleClickRegistryButton(e){
     this.props.registryContest(JSON.parse(e.target.name));
+  }
+  // findCharacterAndCut(char, str){
+  //   let newArr = str.split('"');
+  //   str = newArr.join("'");
+  //   let firstIndex = str.indexOf(char);
+  //   let firstPartOfStr = str.substring(0, firstIndex);
+  //   let secondPartOfStr = str.substring(firstIndex+1);
+  //   return firstPartOfStr+'%'+secondPartOfStr;
+  // }
+  iframe(ifr) {
+    return {
+      __html: ifr
+    }
   }
     render(){
       let countContests = 0;
@@ -12,12 +27,13 @@ export class RenderContestInfors extends React.Component{
             <React.Fragment>
             <div className="mb-4" style={{"textAlign": "center"}}>
                 <div className="h3 mb-0 text-gray-900">
-                  <span><strong>Sự kiện nổi bật</strong></span>
+                  <span><strong>{this.props.isLoading ? <PointSpreadLoading style={{marginTop: "-50px", marginLeft: "45%"}}/> : "Sự kiện nổi bật"}</strong></span>
                 </div>  
             </div>
             <div className="row">
             {this.props.contests? 
               this.props.contests.map((contest)=>{
+                
                 let isJoined = false;
                 for(let i in contest.listParticipates){
                   if(this.props.userId === contest.listParticipates[i]){
@@ -26,17 +42,26 @@ export class RenderContestInfors extends React.Component{
                   }
                 }
                 if(!isJoined){
+                  //let contentPost = this.findCharacterAndCut("&", contest.contentPost);
                   countContests++;
                   return <div key={contest.uidContest} className="col-md-4 mb-4">
                   <div className="card border-left-success shadow h-100 py-2">
                     <div className="card-header">
-                      <img src={contest.posterImg} style={{"height": "100%", "width":"100%"}} />
+                      <img  src={contest.posterImg} style={{"height": "100%", "width":"100%"}} />
                     </div>
                     <div className="card-body">
                         <div className="row no-gutters align-items-center padding-10">
                           <div className="table w-100 margin-bottom-0">
                               <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
-                                  <strong>{contest.contestName}</strong>
+                              <Popup
+                 
+                                trigger={<strong style={{cursor: "pointer"}}>{contest.contestName}</strong>}
+                                position="top center"
+                              >
+                                {/* Popup content -> post's content */}
+                                  <div dangerouslySetInnerHTML={this.iframe(contest.contentPost)}/>
+                              </Popup>
+                                  
                               </div>
                           </div>
                           <div className="col">
@@ -57,7 +82,7 @@ export class RenderContestInfors extends React.Component{
                 </div>
                 }
               })
-              : <div>Hiện chưa có thêm cuộc thi nào</div>
+               : <div>Hiện chưa có thêm cuộc thi nào</div>
             }
             {countContests === 0 ? <div>Hiện chưa có thêm cuộc thi nào</div> : null}
             </div>

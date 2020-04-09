@@ -4,7 +4,8 @@ import {ContestResults} from '../ContestResults/ContestResults';
 import {ContestInfors} from '../ContestInfors/ContestInfors';
 import {RegistriedContests} from '../RegistriedContests/RegistriedContests';
 import './RenderDashboard.css';
-import $ from 'jquery';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
+import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
 export class RenderDashboard extends React.Component{
     handleChangeContent(e){
       this.props.changeRenderContent(e.target.name);
@@ -15,31 +16,35 @@ export class RenderDashboard extends React.Component{
           return <ContestInfors contests={this.props.contests} 
                                 userId={this.props.userId}
                                 registryContest={this.props.registryContest}
-                                />
+                                isLoading={this.props.isLoading}/>
         case "ContestResults":
-          return <ContestResults/>
+          return <ContestResults isLoading={this.props.isLoading}/>
         case "RegistriedContests":
-          return <RegistriedContests/>
+          return <RegistriedContests isLoading={this.props.isLoading}/>
 
         //Show error 404 page
         default:
           return null
       }
     }
-    render(){
-      $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-        $("body").toggleClass("sidebar-toggled");
-        $(".sidebar").toggleClass("toggled");
-        if ($(".sidebar").hasClass("toggled")) {
-         
-        };
+    componentDidMount(){
+      document.getElementById("sidebarToggle").addEventListener('click', ()=> {
+        document.body.classList.toggle("sidebar-toggled");
+        this.sideBar.classList.toggle("toggled");
       })
+      document.getElementById("sidebarToggleTop").addEventListener('click', ()=> {
+        document.body.classList.toggle("sidebar-toggled");
+        this.sideBar.classList.toggle("toggled");
+      })
+    }
+    render(){
         return(   
          
         <React.Fragment>
          
         <div id="wrapper">
-          <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+          <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" 
+            ref={element => this.sideBar = element }>
       
      
             <Link className="sidebar-brand d-flex align-items-center justify-content-center" to="/">
@@ -126,7 +131,7 @@ export class RenderDashboard extends React.Component{
       
    
             <div className="text-center d-none d-md-inline">
-              <button className="rounded-circle border-0" style={{cursor: "pointer"}} id="sidebarToggle"></button>
+              <button className="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
       
           </ul>
@@ -287,7 +292,7 @@ export class RenderDashboard extends React.Component{
                   <li className="nav-item dropdown no-arrow">
                     <Link className="nav-link dropdown-toggle" to="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span className="mr-2 d-none d-lg-inline text-gray-600 small">{this.props.displayName}</span>
-                      <img className="img-profile rounded-circle" alt="" src={this.props.profilePicture}/>
+                      {this.props.isLoading ? <PointSpreadLoading style={{marginRight: "20px"}} />: <img className="img-profile rounded-circle" alt="" src={this.props.profilePicture}/>}
                     </Link>
              
                     <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -314,9 +319,10 @@ export class RenderDashboard extends React.Component{
                 </ul>
       
               </nav>
-              <div className="container-fluid">
+              <div className="container-fluid" >
+              {this.props.isLoading ? <PointSpreadLoading style={{marginTop: "-50px", marginLeft: "45%"}}/> : null}
                 {/* Render Content */}
-                {this.changeContent()}
+                {this.changeContent()|| <Skeleton height={100} count={4} duration={2} />}
               </div>
               {/* <!-- /.container-fluid --> */}
       

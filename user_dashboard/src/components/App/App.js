@@ -9,7 +9,9 @@ import {Forget } from '../Forget/Forget';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 class App extends React.Component{
-  
+  constructor(props){
+    super(props);
+  }
   render(){
     return(
       <BrowserRouter>

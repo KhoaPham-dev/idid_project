@@ -6,6 +6,7 @@ export class ContestInfors extends Component {
             <RenderContestInfors contests={this.props.contests} 
                                 userId={this.props.userId}
                                 registryContest={this.props.registryContest}
+                                isLoading={this.props.isLoading}
                                 />
         );
     }

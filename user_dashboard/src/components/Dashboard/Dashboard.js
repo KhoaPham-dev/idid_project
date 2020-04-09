@@ -3,6 +3,7 @@ import { Redirect} from 'react-router-dom';
 import {app, db} from '../base';
 import { RenderDashboard } from './RenderDashboard'; 
 import { store } from 'react-notifications-component';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 export class Dashboard extends React.Component{
   constructor(props){
     super(props);
@@ -11,7 +12,8 @@ export class Dashboard extends React.Component{
       authenticated: true,
       currentUser: null,
       renderContent: "ContestInfors",
-      contests:[]
+      contests:[],
+      isLoading: true
 
     }
     this.changeRenderContent = this.changeRenderContent.bind(this);
@@ -34,8 +36,8 @@ export class Dashboard extends React.Component{
               numSlots: contests[contest]["num-slots"],
               uidContest: contests[contest]["uid"],
               listParticipates: contests[contest]["participates"]["list"],
-              numDoTest: contests[contest]["num-do-test"]
-              
+              numDoTest: contests[contest]["num-do-test"],
+              contentPost: contests[contest]["content-post"]
             }
             arrContests.push(contest);
           }
@@ -43,7 +45,8 @@ export class Dashboard extends React.Component{
             authenticated: true,
             currentUser: user,
             contests: arrContests,
-            userId: user.uid
+            userId: user.uid,
+            isLoading: false
           })
         });
       } else {
@@ -58,7 +61,7 @@ export class Dashboard extends React.Component{
 
   registryContest(contest){
     let updates = {};
-    let lenListParticipates = contest.listParticipates.length;
+    let lenListParticipates = contest.listParticipates ? contest.listParticipates.length : 0;
     updates['/contests/' + contest.uidContest + '/participates/'+ '/list/' + lenListParticipates] = this.state.userId;
     updates['/users/' + this.state.userId + '/joined-contest/' + contest.uidContest] = {
       "uid-contest" : contest.uidContest,
@@ -87,7 +90,7 @@ export class Dashboard extends React.Component{
       renderContent: content
     })
   }
-
+  
   componentWillUnmount() {
     this.removeAuthListener();
   }
@@ -105,8 +108,9 @@ export class Dashboard extends React.Component{
                         renderContent = {this.state.renderContent}
                         contests = {this.state.contests?this.state.contests:null}
                         registryContest = {this.registryContest}
+                        isLoading={this.state.isLoading}
                         />
-      : <RenderDashboard />
+      : <RenderDashboard isLoading={this.state.isLoading} />
     )
   }
 }
