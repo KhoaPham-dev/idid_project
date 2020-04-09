@@ -15,11 +15,15 @@ export class Login extends React.Component{
     this.loginWithGoogleAccount = this.loginWithGoogleAccount.bind(this);
 
     this.state = {
-      redirect : false
+      redirect : false,
+      isLoading: false
     }
   }
   
   loginWithGoogleAccount(){
+    this.setState({
+      isLoading: true
+    })
     app.auth().signInWithPopup(googleProvider)
     .then((result, error)=> {
       // Handle Errors here.
@@ -62,15 +66,24 @@ export class Login extends React.Component{
     })
     .then((res)=>{
       console.log(res);
-      this.setState({redirect: true})
+      this.setState({
+        redirect: true,
+        isLoading: false
+      })
     })
     .catch((error)=>{
       alert(error.message);
+      this.setState({
+        isLoading: false
+      })
     })
 
   }
 
   loginWithFacebookAccount(){
+    this.setState({
+      isLoading: true
+    })
     app.auth().signInWithPopup(facebookProvider)
       .then((result, error) => {
         if (error) {
@@ -102,14 +115,23 @@ export class Login extends React.Component{
       })
       .then((res)=>{
         console.log(res);
-        this.setState({redirect: true})
+        this.setState({
+          redirect: true,
+          isLoading: false
+        })
       })
       .catch((error)=>{
+        this.setState({
+          isLoading: false
+        })
         alert(error.message);
       })
 
   }
   loginWithEmailAndPassword(event){
+    this.setState({
+      isLoading: true
+    })
     event.preventDefault()
 
     const email = document.querySelector('input[type="email"]').value;
@@ -132,13 +154,19 @@ export class Login extends React.Component{
         if (user && user.user.email) {
           document.querySelector("form").reset();
           console.log(user);
-          this.setState({redirect: true})
+          this.setState({
+            redirect: true,
+            isLoading: false
+          })
         }
         else{
           throw new handleErrorLogin("Email or password is wrong!");
         }
       })
       .catch((error) => {
+        this.setState({
+          isLoading: false
+        })
         alert(error.message);
         document.querySelector("form").reset();
       })
@@ -160,6 +188,10 @@ export class Login extends React.Component{
     if (this.state.redirect === true) {
       return <Redirect to={'/'} />
     }
-    return <RenderLogin loginWithGoogleAccount={this.loginWithGoogleAccount} loginWithFacebookAccount={this.loginWithFacebookAccount} loginWithEmailAndPassword={this.loginWithEmailAndPassword} />
+    return <RenderLogin loginWithGoogleAccount={this.loginWithGoogleAccount} 
+                        loginWithFacebookAccount={this.loginWithFacebookAccount} 
+                        loginWithEmailAndPassword={this.loginWithEmailAndPassword} 
+                        isLoading={this.state.isLoading}
+                        />
   }
 }
