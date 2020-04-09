@@ -1,0 +1,19 @@
+.avatar-pic{
+    width: 50%;
+    border: 3px solid #123123;
+}
+
+.profile-height{
+    height: 400px;
+}
+
+.car-title--style{
+    border-bottom: 1px solid #111111;
+    right: 0;
+}
+
+.centering{ 
+float:none; 
+margin:0 auto 
+} 
+
