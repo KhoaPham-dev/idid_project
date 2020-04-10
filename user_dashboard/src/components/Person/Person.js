@@ -20,8 +20,11 @@ export class Person extends Component {
         this.changeProfile = this.changeProfile.bind(this);
         this.changePassword = this.changePassword.bind(this);
         this.changeEmail = this.changeEmail.bind(this);
+        
     }
 
+
+    
     getDataUser() {
         app.auth().onAuthStateChanged((user) => {
             var user = app.auth().currentUser.uid;
@@ -70,19 +73,19 @@ export class Person extends Component {
         this.checkCurrentPassword(password).then(() => {
             var user = app.auth().currentUser;
 
-            user.updateEmail(newEmail).then(function () {
-                alert("Email đã được thay đổi ^^")
+            user.updateEmail(newEmail).then(()=> {
+                alert("Email đã được thay đổi ^^");
+
+                var updates = {};
+
+                updates['/users/' + this.state.uid + '/' + "email"] = newEmail;
+                return app.database().ref().update(updates);
             }).catch(function (error) {
                 alert(error.message);
             });
         }).catch(() => {
             alert("Sai mật khẩu cũ !!!");
         });
-
-        var updates = {};
-
-        updates['/users/' + this.state.uid + '/' + "email"] = newEmail;
-        return app.database().ref().update(updates);
     }
 
     changePassword(event) {
@@ -105,11 +108,14 @@ export class Person extends Component {
         });
     }
 
+    
+
     componentDidMount() {
         this.getDataUser();
     }
 
     render() {
+        
         let user = this.state.userAvail;
         if (user !== null) {
             return <RenderPerson
@@ -117,6 +123,7 @@ export class Person extends Component {
                 changeProfile={this.changeProfile}
                 changeEmail={this.changeEmail}
                 changePassword={this.changePassword}
+                phoneAuth={this.phoneAuth}
             />
         } else return <PointSpreadLoading />
     }
