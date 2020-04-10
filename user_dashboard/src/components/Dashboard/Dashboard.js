@@ -60,13 +60,19 @@ export class Dashboard extends React.Component{
   }
 
   registryContest(contest){
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date+' '+time;
     let updates = {};
     let lenListParticipates = contest.listParticipates ? contest.listParticipates.length : 0;
+    updates['/contests/' + contest.uidContest + '/participates/' + 'quantity'] = contest.quantity+1;
     updates['/contests/' + contest.uidContest + '/participates/'+ '/list/' + lenListParticipates] = this.state.userId;
     updates['/users/' + this.state.userId + '/joined-contest/' + contest.uidContest] = {
       "uid-contest" : contest.uidContest,
       "num-do-test" : contest.numDoTest,
-      "start-contest-date": contest.startContestDate
+      "start-contest-date": contest.startContestDate,
+      "user-regitried-date": dateTime
     };
     db.ref().update(updates)
     .then(()=>{

@@ -4,6 +4,8 @@ import './RenderContestInfors.css';
 import Popup from "reactjs-popup";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
+import ContentModals from '../ContentModals/ContentModals';
+
 export class RenderContestInfors extends React.Component{
   handleClickRegistryButton(e){
     this.props.registryContest(JSON.parse(e.target.name));
@@ -16,11 +18,6 @@ export class RenderContestInfors extends React.Component{
   //   let secondPartOfStr = str.substring(firstIndex+1);
   //   return firstPartOfStr+'%'+secondPartOfStr;
   // }
-  iframe(ifr) {
-    return {
-      __html: ifr
-    }
-  }
     render(){
       let countContests = 0;
         return(
@@ -53,13 +50,12 @@ export class RenderContestInfors extends React.Component{
                         <div className="row no-gutters align-items-center padding-10">
                           <div className="table w-100 margin-bottom-0">
                               <div className="table-cell event-title" style={{fontSize: "1rem", color:"#333333"}}>
-                              <Popup
-                 
-                                trigger={<strong style={{cursor: "pointer"}}>{contest.contestName}</strong>}
-                                position="top center"
-                              >
-                                {/* Popup content -> post's content */}
-                                  <div dangerouslySetInnerHTML={this.iframe(contest.contentPost)}/>
+                              {/* Popup content -> post's content */}
+                              <Popup 
+                                modal
+                                trigger={<strong style={{cursor: "pointer"}}>{contest.contestName}</strong>}>
+                                
+                                {close => <ContentModals contest={contest} close={close}/>}
                               </Popup>
                                   
                               </div>

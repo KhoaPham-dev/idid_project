@@ -18,10 +18,11 @@ function checkFileExtension(filename){
   if(extension === "png" || extension === "jpg" || extension === "gif") return true;
   return false;
 }
-function checkValidInput(firstName, lastName, email, password, repeatPassword, imageFile){
-  if(firstName === "" || lastName === "" || email === "" || password === "" || repeatPassword === "" || !imageFile) throw new handleErrorMessage("Form must be filled!");
-  if(password.length <= 6) throw new handleErrorMessage("Password should be longer!");
-  if(password !== repeatPassword) throw new handleErrorMessage("Repeat password does not match password");
+function checkValidInput(firstName, lastName, email, password, repeatPassword, imageFile, phone){
+  if(firstName === "" || lastName === "" || email === "" || password === "" || repeatPassword === "" || !imageFile || phone ==="") throw new handleErrorMessage("Form must be filled!");
+  if(password.length <= 6) throw new handleErrorMessage("Mật khẩu cần dài hơn 6 kí tự!");
+  if(password !== repeatPassword) throw new handleErrorMessage("Nhập lại mật khẩu không trùng khớp!");
+  if(phone.length <= 9) throw new handleErrorMessage("Số điện thoại phải dài hơn 9 số!");
 }
 
 
@@ -37,7 +38,7 @@ export class Signup extends React.Component{
         this.handleChangeFileInput = this.handleChangeFileInput.bind(this);
         this.previewProfilePicture = this.previewProfilePicture.bind(this);
     }
-    async uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID){
+    async uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID, phone){
       let formData = new FormData();
       formData.append('file', imageFile);
       formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -57,7 +58,8 @@ export class Signup extends React.Component{
             fullname: fullname,
             profile_picture : res.data.url,
             permission: "user",
-            joined_contest: {}
+            joined_contest: {},
+            phone: phone
           })
         return res.data.url;
       })
@@ -71,8 +73,26 @@ export class Signup extends React.Component{
           }
         });
       })
-      .catch((error)=>{
-        alert(error.message);
+      .catch(async(error)=>{
+        console.log(error.message);
+        await db.ref('users/' + userID).set({
+          id: userID,
+          username: username,
+          email: email,
+          fullname: fullname,
+          profile_picture : 'https://res.cloudinary.com/idid/image/upload/v1586429434/pwurg93muoztvc4bdf8s.png',
+          permission: "user",
+          joined_contest: {},
+          phone: phone
+        })
+        this.removeAuthListener = app.auth().onAuthStateChanged(async (user)=>{
+          if (user) {
+              await user.updateProfile({
+              displayName: username,
+              photoURL: 'https://res.cloudinary.com/idid/image/upload/v1586429434/pwurg93muoztvc4bdf8s.png'
+              })
+          }
+        })
       })
     }
     signUpWithEmailAndPassword(event){
@@ -84,8 +104,9 @@ export class Signup extends React.Component{
       const password = document.querySelector('input[name="password"]').value;
       const repeatPassword = document.querySelector('input[name="repeat-password"]').value;
       const imageFile = document.querySelector('input[name="file"]').files[0];
+      const phone = document.querySelector('input[name="phone"]').value;
       try {
-        checkValidInput(fullname, username, email, password, repeatPassword, imageFile);
+        checkValidInput(fullname, username, email, password, repeatPassword, imageFile, phone);
         this.setState({
           isLoading: true
         })
@@ -95,7 +116,7 @@ export class Signup extends React.Component{
           let userID = result.user.uid;
           //Add to database
           //return profile picture url and username
-          return this.uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID); 
+          return this.uploadInforUserToDatabaseAndCloudinary(imageFile, username, email, fullname, userID, phone); 
         })
         .then((res)=>{
           //wait for response from update profile
@@ -104,7 +125,7 @@ export class Signup extends React.Component{
               redirect: true,
               isLoading: false
             })
-          }, 1000)
+          }, 2000)
         })
         .catch((error)=> {
           alert(error.message);
