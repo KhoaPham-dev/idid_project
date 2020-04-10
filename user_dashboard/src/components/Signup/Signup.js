@@ -162,9 +162,7 @@ export class Signup extends React.Component{
       document.getElementsByClassName("register-image")[0].style.backgroundImage = `url(${this.state.imgSrc})`;
     }
 
-    componentWillUnmount() {
-      this.removeAuthListener();
-    }
+    
     render(){
       if(this.state.redirect === true){
         return <Redirect to={'/'} />

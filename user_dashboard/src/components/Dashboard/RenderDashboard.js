@@ -3,9 +3,11 @@ import {Link} from 'react-router-dom';
 import {ContestResults} from '../ContestResults/ContestResults';
 import {ContestInfors} from '../ContestInfors/ContestInfors';
 import {RegistriedContests} from '../RegistriedContests/RegistriedContests';
+import {Person} from '../Person/Person';
 import './RenderDashboard.css';
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
+
 export class RenderDashboard extends React.Component{
     handleChangeContent(e){
       this.props.changeRenderContent(e.target.name);
@@ -21,7 +23,8 @@ export class RenderDashboard extends React.Component{
           return <ContestResults isLoading={this.props.isLoading}/>
         case "RegistriedContests":
           return <RegistriedContests isLoading={this.props.isLoading}/>
-
+        case "Person":
+          return <Person/>
         //Show error 404 page
         default:
           return null
@@ -80,9 +83,9 @@ export class RenderDashboard extends React.Component{
               </Link>
               <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestInfors" value="Sắp diễn ra"/>
-                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="RegistriedContests" value="Đã đăng ký"/>
-                  <input onClick={this.handleChangeContent.bind(this)} type="button" className="collapse-item idid-button" name="ContestResults" value="Kết quả thi"/>
+                  <Link onClick={this.handleChangeContent.bind(this)} to="#" className="collapse-item" name="ContestInfors" >Sắp diễn ra</Link>
+                  <Link onClick={this.handleChangeContent.bind(this)}  to="#" className="collapse-item" name="RegistriedContests">Đã đăng ký</Link>
+                  <Link onClick={this.handleChangeContent.bind(this)}  to="#" className="collapse-item" name="ContestResults" >Kết quả thi</Link>
                 </div>
               </div>
             </li>
@@ -103,9 +106,9 @@ export class RenderDashboard extends React.Component{
               <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
                   <h6 className="collapse-header">Chỉnh sửa thông tin</h6>
-                  <Link className="collapse-item" to="register.html">Profile</Link>
-                  <Link className="collapse-item" to="login.html">Thay đổi email</Link>
-                  <Link className="collapse-item" to="register.html">Thay đổi mật khẩu</Link>
+                  <Link onClick={this.handleChangeContent.bind(this)} to="#" className="collapse-item" name="Person">
+                    Hồ sơ
+                    </Link>
                 </div>
               </div>
             </li>
@@ -296,13 +299,10 @@ export class RenderDashboard extends React.Component{
                     </Link>
              
                     <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                      <Link className="dropdown-item" to="#">
+                  
+                      <Link onClick={this.handleChangeContent.bind(this)} to="#" className="dropdown-item" name="Person">
                         <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
-                      </Link>
-                      <Link className="dropdown-item" to="#">
-                        <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Settings
                       </Link>
                       <Link className="dropdown-item" to="#">
                         <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>

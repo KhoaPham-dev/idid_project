@@ -10,7 +10,10 @@
 iframe{
     background-color: white;
     width: 100%;
-    height: 600;
+    height: 700;
+}
+.popup-content{
+    overflow: auto;
 }
 .close {
     cursor: pointer;
@@ -25,6 +28,15 @@ iframe{
     border-radius: 18px;
     border: 1px solid #cfcece;
   }
+.card-header{
+    min-height: 265px;
+}
+.poster-img{
+    max-height: 240px;
+}
+.table{
+    height: 3.2rem;
+}
 @media only screen and (max-width: 880px) {
     .popup-content{
         width: 60% !important;
@@ -39,24 +51,31 @@ iframe{
     .popup-content{
         width: 80% !important;
     }
+    
 } 
-@media (max-width: 1111px){
+@media (max-width: 1160px){
 .col-md-4 {
     flex: 0 0 50%;
     max-width: 50%;
 }
 }
-@media (max-width: 840px){
+@media (max-width: 850px){
     .col-md-4 {
         flex: 0 0 100%;
         max-width: 100%;
     }
+    .poster-img{
+        max-height: 500px;
     }
+}
 @media (max-width: 409px){
     .col, .calendar, .container-col-calendar{
         text-align: center;
     }
     .calendar{
         margin: 5px auto;
+    }
+    .poster-img{
+        max-height: 500px;
     }
 }
