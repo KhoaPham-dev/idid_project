@@ -31,20 +31,33 @@ export class RenderContestInfors extends React.Component{
             {this.props.contests? 
               this.props.contests.map((contest)=>{
                 
-                let isJoined = false;
+                let isJoinedOrIsExpiredAndIsNotStarted = false;
                 for(let i in contest.listParticipates){
                   if(this.props.userId === contest.listParticipates[i]){
-                    isJoined = true;
+                    isJoinedOrIsExpiredAndIsNotStarted = true;
                     break;
                   }
                 }
-                if(!isJoined){
+
+                //For isStarted?
+                let currDate = Date.now();
+                let startRegistryDate = new Date(contest.startRegistryDate);
+                let start_daysLeft = startRegistryDate.getTime() - currDate;
+                //For isEpxired?
+                
+                let expireRegistryDate =  new Date(contest.expireRegistryDate);
+                let expire_daysLeft =  expireRegistryDate.getTime() - currDate ;
+                
+                if(expire_daysLeft < 0 || start_daysLeft > 0){
+                  isJoinedOrIsExpiredAndIsNotStarted = true;
+                }
+                if(!isJoinedOrIsExpiredAndIsNotStarted){
                   //let contentPost = this.findCharacterAndCut("&", contest.contentPost);
                   countContests++;
                   return <div key={contest.uidContest} className="col-md-4 mb-4">
                   <div className="card border-left-success shadow h-100 py-2">
                     <div className="card-header">
-                      <img  src={contest.posterImg} style={{"height": "100%", "width":"100%"}} />
+                      <img className="poster-img" src={contest.posterImg} style={{"height": "100%", "width":"100%"}} />
                     </div>
                     <div className="card-body">
                         <div className="row no-gutters align-items-center padding-10">

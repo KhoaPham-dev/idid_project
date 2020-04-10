@@ -4,6 +4,7 @@ import {app, db} from '../base';
 import { RenderDashboard } from './RenderDashboard'; 
 import { store } from 'react-notifications-component';
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
+
 export class Dashboard extends React.Component{
   constructor(props){
     super(props);
@@ -37,7 +38,10 @@ export class Dashboard extends React.Component{
               uidContest: contests[contest]["uid"],
               listParticipates: contests[contest]["participates"]["list"],
               numDoTest: contests[contest]["num-do-test"],
-              contentPost: contests[contest]["content-post"]
+              contentPost: contests[contest]["content-post"],
+              expireRegistryDate: contests[contest]["expire-registry-date"],
+              startRegistryDate: contests[contest]["start-registry-date"],
+              type: contests[contest]["type"]
             }
             arrContests.push(contest);
           }
