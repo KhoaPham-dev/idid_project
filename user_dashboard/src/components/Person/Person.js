@@ -41,14 +41,17 @@ export class Person extends Component {
         const fullname = document.querySelector('input[name="NewFullname"]').value;
         const phoneNumber = document.querySelector('input[name="NewPhoneNumber"]').value;
 
-        var updates = {
+        var newDatas = {
             fullname: fullname,
             phoneNumber: phoneNumber
         };
 
-        for (var key in updates) {
-            updates['/users/' + this.state.uId + '/' + key] = updates[key];
+        var updates = {};
+
+        for (var key in newDatas) {
+            updates['/users/' + this.state.uId + '/' + key] = newDatas[key];
         }
+        
         return app.database().ref().update(updates);
     }
 
