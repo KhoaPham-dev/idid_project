@@ -20,9 +20,17 @@ export class RenderDashboard extends React.Component{
                                 registryContest={this.props.registryContest}
                                 isLoading={this.props.isLoading}/>
         case "ContestResults":
-          return <ContestResults isLoading={this.props.isLoading}/>
+          return <ContestResults  isLoading={this.props.isLoading}
+                                  
+                                  />
         case "RegistriedContests":
-          return <RegistriedContests isLoading={this.props.isLoading}/>
+          return <RegistriedContests  isLoading={this.props.isLoading}
+                                      registriedContests={this.props.registriedContests}
+                                      userJoinedContests={this.props.userJoinedContests}
+                                      changeRegistriedContestsInfor={this.props.changeRegistriedContestsInfor}
+                                      renderRegistriedContestInfor = {this.props.renderRegistriedContestInfor}
+                                      removeContest = {this.props.removeContest}
+                                      />
         case "Person":
           return <Person/>
         //Show error 404 page

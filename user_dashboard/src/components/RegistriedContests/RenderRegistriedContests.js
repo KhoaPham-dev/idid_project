@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import './RenderRegistriedContests.css';
+import { Link, animateScroll as scroll } from "react-scroll";
+
 export class RenderRegistriedContests extends Component {
+    handleClickShowRegistriedContestsInfor(e){
+        this.props.changeRegistriedContestsInfor(e.target.innerText);
+    }
+    handleClickRemoveContest(e){
+        this.props.removeContest(JSON.parse(e.target.name))
+    }
+    iframe(ifr) {
+        return {
+          __html: ifr
+        }
+      }
     render() {
         return (
             <React.Fragment>
@@ -11,68 +24,82 @@ export class RenderRegistriedContests extends Component {
             </div>
             <div className="row">
       
-                {/* <!-- Area Chart --> */}
-                <div className="col-xl-8 col-lg-7">
+                {/* <!-- Danh sach cuoc thi da dang ky --> */}
+                <div className="col-xl-7 col-lg-7">
                     <div className="card shadow mb-4">
                     {/* <!-- Card Header - Dropdown --> */}
                     <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 className="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                        <div className="dropdown no-arrow">
-                        <Link className="dropdown-toggle" to="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </Link>
-                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                            <div className="dropdown-header">Dropdown Header:</div>
-                            <Link className="dropdown-item" to="#">Action</Link>
-                            <Link className="dropdown-item" to="#">Another action</Link>
-                            <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="#">Something else here</Link>
-                        </div>
-                        </div>
+                        <h6 className="m-0 font-weight-bold text-primary">Danh sách các cuộc thi đã đăng ký</h6>
+                     
                     </div>
                     {/* <!-- Card Body --> */}
                     <div className="card-body">
-                        <div className="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        <div className="listing-contests-area">
+                            {this.props.registriedContests[0] ?
+                            <ul>
+                                {this.props.registriedContests.map((registriedContest)=>{
+                                    return (
+                                            <React.Fragment key={registriedContest["uid"]}>
+                                            <div className="py-3 d-flex flex-row align-items-center justify-content-between">
+                                                
+                                                <li>                                            
+                                                    <Link className="registried-contest-name" activeClass="active" spy={true} smooth={true} offset={-70} duration= {500} to={`${registriedContest["uid"]}`} onClick={this.handleClickShowRegistriedContestsInfor.bind(this)}>
+                                                        {registriedContest["contest-name"]}
+                                                    </Link>
+                                                    <p>Tổ chức bởi: {registriedContest["holder"]}</p>
+                                                    {this.props.userJoinedContests.map((userJoinedContest)=>{
+                                                            return userJoinedContest["uid-contest"] === registriedContest["uid"] ? <p key={userJoinedContest["uid-contest"]}>Đăng ký ngày: <i>{userJoinedContest["user-registried-date"]}</i></p>:null
+                                                        })
+                                                    }
+                                                </li>
+                                                <li className="dropdown no-arrow" style={{listStyle: "none"}}>
+                                                    <div className="dropdown-toggle dropdown-toggle-unregistry" to="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{}}>
+                                                                <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    </div>
+                                                    <div className="dropdown-unregistry dropdown-menu dropdown-menu-right shadow animated--grow-in"  aria-labelledby="userDropdown">
+                                                    
+    
+                                                            <input onClick={this.handleClickRemoveContest.bind(this)} type="button" name={JSON.stringify(registriedContest)} value="Hủy đăng ký" className="dropdown-item btn btn-primary" />
+                                                    </div>
+                                                </li>
+                                            </div>
+                                            <hr/>
+                                            </React.Fragment>
+                                    )
+                                })}
+                            </ul>
+                            :"Bạn chưa đăng ký cuộc thi nào"}
                         </div>
                     </div>
                     </div>
                 </div>
 
-                {/* <!-- Pie Chart --> */}
-                <div className="col-xl-4 col-lg-5">
+                {/* <!-- Thong tin cuoc thi --> */}
+                <div className="col-xl-4 col-lg-5 detail-infor">
                     <div className="card shadow mb-4">
                     {/* <!-- Card Header - Dropdown --> */}
                     <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 className="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                        <div className="dropdown no-arrow">
-                        <Link className="dropdown-toggle" to="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </Link>
-                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                            <div className="dropdown-header">Dropdown Header:</div>
-                            <Link className="dropdown-item" to="#">Action</Link>
-                            <Link className="dropdown-item" to="#">Another action</Link>
-                            <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="#">Something else here</Link>
-                        </div>
-                        </div>
+                        <h6 className="m-0 font-weight-bold text-primary">Thông tin chi tiết</h6>
+                        
                     </div>
                     {/* <!-- Card Body --> */}
                     <div className="card-body">
-                        <div className="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
+                        <div className="pt-4 pb-2">
+                        {this.props.registriedContests[0] ?
+                                this.props.registriedContests.map((registriedContest)=>{
+                                    return registriedContest["contest-name"] === this.props.renderRegistriedContestInfor?
+                                    (
+                                        <React.Fragment key={registriedContest["uid"]}>
+                                            {/* <img id={registriedContest["uid"]} className="img-registried-contest" src={registriedContest["poster-img"]} alt={registriedContest["contest-name"]} /> */}
+                                            <div id={registriedContest["uid"]} dangerouslySetInnerHTML={this.iframe(registriedContest["content-post"])}/>
+                                        </React.Fragment>
+                                    )
+                                    : null 
+                                })
+                            :"Bạn chưa đăng ký cuộc thi nào"}
                         </div>
                         <div className="mt-4 text-center small">
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-primary"></i> Direct
-                        </span>
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-success"></i> Social
-                        </span>
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-info"></i> Referral
-                        </span>
+                    
                         </div>
                     </div>
                     </div>

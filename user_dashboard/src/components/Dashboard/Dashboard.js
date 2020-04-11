@@ -14,20 +14,24 @@ export class Dashboard extends React.Component{
       currentUser: null,
       renderContent: "ContestInfors",
       contests:[],
+      registriedContests:[],
+      userJoinedContests:[],
+      showRegistriedContestInfor: "",
       isLoading: true
-
     }
     this.changeRenderContent = this.changeRenderContent.bind(this);
     this.registryContest = this.registryContest.bind(this);
+    this.changeRegistriedContestsInfor = this.changeRegistriedContestsInfor.bind(this);
+    this.removeContest = this.removeContest.bind(this);
   }
   
   componentWillMount(){
-    this.removeAuthListener = app.auth().onAuthStateChanged((user) => {
+    this.removeAuthListener = app.auth().onAuthStateChanged(async(user) => {
       //Get contests infors
       if (user) {
-          db.ref('/contests/').on('value', (snapshot)=> {
-          let contests = snapshot.val();
+        db.ref('/contests/').on('value', (snapshot)=> {
           let arrContests = [];
+          let contests = snapshot.val();
           for (let contest in contests){
             contest = {
               contestName : contests[contest]["contest-name"],
@@ -50,9 +54,29 @@ export class Dashboard extends React.Component{
             currentUser: user,
             contests: arrContests,
             userId: user.uid,
-            isLoading: false
+            isLoading: false,
+            renderContent: document.cookie.substring(6) || "ContestInfors"
           })
-        });
+        })
+        db.ref('/users/' + user.uid + '/joined-contest/').on('value', (snapshot)=>{
+          let registriedContests=[]; //registried contests of users in contests database
+          let uidContests = snapshot.val();
+          let userJoinedContests=[]; //registried contests of users in users database
+          for(let uidContest in uidContests){
+            userJoinedContests.push(uidContests[uidContest]);
+            db.ref('/contests/' + uidContest).on('value', (snapshot)=>{
+              let contest = snapshot.val();
+              registriedContests.push(contest)
+            })
+          }
+          this.setState({
+            registriedContests: registriedContests,
+            userJoinedContests: userJoinedContests,
+            showRegistriedContestInfor: registriedContests[0] ? registriedContests[0]["contest-name"] : null
+          })
+        })
+        
+        
       } else {
         this.setState({
           authenticated: false,
@@ -71,12 +95,12 @@ export class Dashboard extends React.Component{
     let updates = {};
     let lenListParticipates = contest.listParticipates ? contest.listParticipates.length : 0;
     updates['/contests/' + contest.uidContest + '/participates/' + 'quantity'] = contest.quantity+1;
-    updates['/contests/' + contest.uidContest + '/participates/'+ '/list/' + lenListParticipates] = this.state.userId;
+    updates['/contests/' + contest.uidContest + '/participates/'+ 'list/' + lenListParticipates] = this.state.userId;
     updates['/users/' + this.state.userId + '/joined-contest/' + contest.uidContest] = {
       "uid-contest" : contest.uidContest,
       "num-do-test" : contest.numDoTest,
       "start-contest-date": contest.startContestDate,
-      "user-regitried-date": dateTime
+      "user-registried-date": dateTime
     };
     db.ref().update(updates)
     .then(()=>{
@@ -96,11 +120,50 @@ export class Dashboard extends React.Component{
   }
 
   changeRenderContent(content){
+    document.cookie=`path=/${content}`;
     this.setState({
       renderContent: content
     })
   }
-  
+
+  changeRegistriedContestsInfor(registriedContestName){
+    this.setState({
+      showRegistriedContestInfor: registriedContestName
+    })
+  }
+ 
+  removeContest(contest){
+    let indexOfContest;
+    let updates = {};
+    for(let i = 0; i < contest["participates"]["list"].length; i++){
+      if(contest["participates"]["list"][i] === this.state.userId){
+        indexOfContest = i;
+        break;
+      }
+    }
+    updates['/contests/' + contest["uid"] + '/participates/' + 'quantity'] = contest["participates"]["quantity"]-1;  //decreasing
+    updates['/contests/' + contest["uid"] + '/participates/'+ 'list/' + indexOfContest] = null; //removing
+    updates['/users/' + this.state.userId + '/joined-contest/' + contest["uid"]] = null; //removing
+    db.ref().update(updates)
+    .then(()=>{
+      store.addNotification({
+        title: "Thông báo",
+        message: "Bạn đã đăng ký thành công!",
+        type: "success",
+        insert: "bottom",
+        container: "bottom-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 1000
+        }
+      });
+    })
+    .catch(error=>{
+      alert(error)
+    })
+  }
+
   componentWillUnmount() {
     this.removeAuthListener();
   }
@@ -110,6 +173,7 @@ export class Dashboard extends React.Component{
       return <Redirect to={'/login'} />;
     }
     return(
+      
       this.state.currentUser ?
       <RenderDashboard  userId={this.state.userId}
                         profilePicture={this.state.currentUser.photoURL}
@@ -117,8 +181,14 @@ export class Dashboard extends React.Component{
                         changeRenderContent = {this.changeRenderContent}
                         renderContent = {this.state.renderContent}
                         contests = {this.state.contests?this.state.contests:null}
+                        registriedContests = {this.state.registriedContests? this.state.registriedContests:null}
+                        userJoinedContests = {this.state.userJoinedContests? this.state.userJoinedContests:null}
+                        changeRegistriedContestsInfor = {this.changeRegistriedContestsInfor}
+                        renderRegistriedContestInfor = {this.state.showRegistriedContestInfor}
                         registryContest = {this.registryContest}
+                        removeContest = {this.removeContest}
                         isLoading={this.state.isLoading}
+
                         />
       : <RenderDashboard isLoading={this.state.isLoading} />
     )

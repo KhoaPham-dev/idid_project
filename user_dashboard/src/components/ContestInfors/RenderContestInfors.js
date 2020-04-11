@@ -4,7 +4,7 @@ import './RenderContestInfors.css';
 import Popup from "reactjs-popup";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
-import ContentModals from '../ContentModals/ContentModals';
+import {ContentPostModal} from '../ContentModals/ContentModals';
 
 export class RenderContestInfors extends React.Component{
   handleClickRegistryButton(e){
@@ -56,7 +56,7 @@ export class RenderContestInfors extends React.Component{
                   countContests++;
                   return <div key={contest.uidContest} className="col-md-4 mb-4">
                   <div className="card border-left-success shadow h-100 py-2">
-                    <div className="card-header">
+                    <div className="card-header card-header-contest-infor">
                       <img className="poster-img" src={contest.posterImg} style={{"height": "100%", "width":"100%"}} />
                     </div>
                     <div className="card-body">
@@ -68,7 +68,7 @@ export class RenderContestInfors extends React.Component{
                                 modal
                                 trigger={<strong style={{cursor: "pointer"}}>{contest.contestName}</strong>}>
                                 
-                                {close => <ContentModals contest={contest} close={close}/>}
+                                {close => <ContentPostModal contest={contest} close={close}/>}
                               </Popup>
                                   
                               </div>
