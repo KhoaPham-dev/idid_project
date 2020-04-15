@@ -39,6 +39,10 @@ export class RenderDashboard extends React.Component{
       }
     }
     componentDidMount(){
+      if(window.screen.width <= 760){
+        document.body.classList.toggle("sidebar-toggled");
+        this.sideBar.classList.toggle("toggled");
+      }
       document.getElementById("sidebarToggle").addEventListener('click', ()=> {
         document.body.classList.toggle("sidebar-toggled");
         this.sideBar.classList.toggle("toggled");

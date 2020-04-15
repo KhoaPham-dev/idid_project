@@ -26,10 +26,7 @@
     
 }
 @media (max-width: 991px){
-    .register-image {
-        display: block !important;
-        height: 15rem;
-        width: 60%;
-        margin: 0 auto;
+    .inputFile, .labelFile{
+        display: none;
     }
-    }
+}

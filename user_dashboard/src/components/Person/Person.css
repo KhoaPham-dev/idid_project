@@ -16,4 +16,38 @@
 float:none; 
 margin:0 auto 
 } 
-
+@media only screen and (max-width: 1300px){
+    .person-change-photo{
+        display: none;
+    }
+}
+.person-preview-profile-picture img{
+    max-width: 40%;
+    max-height: 350px;
+}
+.person-preview-profile-picture{
+    text-align: center;
+    min-height: 350px;
+}
+.person-inputFile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.person-labelFile{
+    border: 1px solid #d1d3e2;
+    cursor: pointer;
+    color: #999;
+    font-size: .8rem;
+    border-radius: 0.1rem;
+    padding: 0.9rem 0.5rem;
+    margin-right: 0.8rem;
+}
+.person-labelFile:hover{
+    background-color: #4e73df;
+    color: white;
+    border: 1px solid #4e73df;
+}

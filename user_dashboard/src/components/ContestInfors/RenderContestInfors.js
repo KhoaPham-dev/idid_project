@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import './RenderContestInfors.css';
 import Popup from "reactjs-popup";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
-import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
 import {ContentPostModal} from '../ContentModals/ContentModals';
 
 export class RenderContestInfors extends React.Component{
@@ -24,7 +23,7 @@ export class RenderContestInfors extends React.Component{
             <React.Fragment>
             <div className="mb-4" style={{"textAlign": "center"}}>
                 <div className="h3 mb-0 text-gray-900">
-                  <span><strong>{this.props.isLoading ? <PointSpreadLoading style={{marginTop: "-50px", marginLeft: "45%"}}/> : "Sự kiện nổi bật"}</strong></span>
+                  <span><strong>Sự kiện nổi bật</strong></span>
                 </div>  
             </div>
             <div className="row">
