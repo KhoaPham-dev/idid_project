@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {HashRouter, Route} from 'react-router-dom';
 import {Login} from '../Login/Login';
 import  {Dashboard}  from '../Dashboard/Dashboard';
 import {Logout} from '../Logout/Logout';
@@ -14,7 +14,7 @@ class App extends React.Component{
   }
   render(){
     return(
-      <BrowserRouter>
+      <HashRouter>
       <ReactNotification />
       <Route exact path="/" render={(props=>{
         return <Dashboard />
@@ -25,7 +25,7 @@ class App extends React.Component{
       <Route exact path="/logout" component={Logout} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/forget" component={Forget} />
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }
