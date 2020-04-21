@@ -1,0 +1,58 @@
+p{
+    margin-bottom: 0rem;
+}
+a:hover{
+    color: #858796;
+}
+.listing-contests-area{
+    padding: 1.5em;
+}
+.dropdown-unregistry{
+    transform: none !important;
+    top: 24px !important;
+    left: -30px !important;
+    min-width: 8.2rem;
+}
+.dropdown-toggle-unregistry{
+    cursor: pointer !important;
+
+}
+.dropdown-toggle-unregistry .fa-sm {
+    font-size: 1.5em !important;
+}
+.detail-infor{
+    position: fixed;
+    right: 0.68em;
+    top: 150px;
+}
+.col-xl-4.detail-infor {
+    flex: 0 0 35%;
+    max-width: 35%;
+}
+.registried-contest-name{
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    color: #858796;
+    text-decoration: none !important;
+    padding: 1rem;
+}
+
+.img-registried-contest{
+    width: 100%;
+}
+@media (max-width: 1260px){
+    .col-xl-4.detail-infor {
+        flex: 0 0 33%;
+        max-width: 33%;
+    }
+}
+@media (max-width: 991px){
+    .col-xl-4.detail-infor {
+       position: relative;
+       top: 0px;
+       right: 0;
+       flex: 0 0 100%;
+       max-width: 100%;
+    }
+}
