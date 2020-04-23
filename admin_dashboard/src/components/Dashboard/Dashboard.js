@@ -12,7 +12,7 @@ export class Dashboard extends React.Component{
       userId: "",
       authenticated: true,
       currentUser: null,
-      renderContent: "ContestInfors",
+      renderContent: "Database",
       isLoading: true
     }
     this.changeRenderContent = this.changeRenderContent.bind(this);
@@ -22,14 +22,29 @@ export class Dashboard extends React.Component{
     this.removeAuthListener = app.auth().onAuthStateChanged(async(user) => {
       //Get contests infors
       if (user) {
-       
+       //check if this account is user or admin
+      db.ref('/admins/'+ user.uid + '/permission/').once('value', (snapshot)=>{
+        //if this account is user => logout, does not have permission
+        if(snapshot.val() != 'admin'){
+          app.auth().signOut().then((user) => {
+            this.setState({ 
+              authenticated: false,
+              isLoading: false
+             })
+          })
+          alert("Email or password is wrong!");
+        }
+        else{
           this.setState({
             authenticated: true,
             currentUser: user,
             userId: user.uid,
             isLoading: false,
-            renderContent: document.cookie.substring(6) || "ContestInfors"
+            renderContent: document.cookie.substring(6) || "Database"
           })
+        }
+      })
+         
   
       } else {
         this.setState({

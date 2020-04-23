@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Person} from '../Person/Person';
+import {Database} from '../Database/Database';
 import './RenderDashboard.css';
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
@@ -10,22 +11,16 @@ export class RenderDashboard extends React.Component{
       this.props.changeRenderContent(e.target.name);
     }
     changeContent(){
-      // switch (this.props.renderContent) {
-      //   case "ContestInfors":
-      //     return <ContestInfors userId={this.props.userId}
-      //                           isLoading={this.props.isLoading}/>
-      //   case "ContestResults":
-      //     return <ContestResults  isLoading={this.props.isLoading}
-      //                             />
-      //   case "RegistriedContests":
-      //     return <RegistriedContests  isLoading={this.props.isLoading}
-      //                                 />
-      //   case "Person":
-      //     return <Person/>
-      //   //Show error 404 page
-      //   default:
-      //     return null
-      // }
+      switch (this.props.renderContent) {
+        case "Database":
+          return <Database userId={this.props.userId}
+                                isLoading={this.props.isLoading}/>
+        case "Person":
+          return <Person/>
+        //Show error 404 page
+        default:
+          return null
+      }
     }
     componentDidMount(){
       if(window.screen.width <= 760){
@@ -84,9 +79,8 @@ export class RenderDashboard extends React.Component{
               </Link>
               <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                  <Link onClick={this.handleChangeContent.bind(this)} to="#" className="collapse-item" name="ContestInfors" >Sắp diễn ra</Link>
-                  <Link onClick={this.handleChangeContent.bind(this)}  to="#" className="collapse-item" name="RegistriedContests">Đã đăng ký</Link>
-                  <Link onClick={this.handleChangeContent.bind(this)}  to="#" className="collapse-item" name="ContestResults" >Kết quả thi</Link>
+                  <Link onClick={this.handleChangeContent.bind(this)} to="#" className="collapse-item" name="Database" >Database</Link>
+                  
                 </div>
               </div>
             </li>
