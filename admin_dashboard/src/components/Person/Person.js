@@ -37,7 +37,7 @@ export class Person extends Component {
     getDataUser() {
         app.auth().onAuthStateChanged((user) => {
             var userId = app.auth().currentUser.uid;
-            app.database().ref('users/' + userId).on('value', snapshot => {
+            app.database().ref('admins/' + userId).on('value', snapshot => {
                 var getDataUser = snapshot.val();
                 this.setState({
                     uId: userId,
@@ -63,7 +63,7 @@ export class Person extends Component {
         var updates = {};
 
         for (var key in newDatas) {
-            updates['/users/' + this.state.uId + '/' + key] = newDatas[key];
+            updates['/admins/' + this.state.uId + '/' + key] = newDatas[key];
         }
         
         return app.database().ref().update(updates);
@@ -89,7 +89,7 @@ export class Person extends Component {
 
                 var updates = {};
 
-                updates['/users/' + this.state.uid + '/' + "email"] = newEmail;
+                updates['/admins/' + this.state.uid + '/' + "email"] = newEmail;
                 return app.database().ref().update(updates);
             }).catch(function (error) {
                 alert(error.message);
@@ -159,7 +159,7 @@ export class Person extends Component {
             return res.data.url;
         })
         .then((profilePictureUrl)=>{
-            return app.database().ref('users/' + user.uid).update({
+            return app.database().ref('admins/' + user.uid).update({
               profile_picture : profilePictureUrl,
             })
         })
