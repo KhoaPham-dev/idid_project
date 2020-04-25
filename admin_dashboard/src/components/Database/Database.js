@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {db} from '../base';
 import {RenderDatabase} from './RenderDatabase';
 
+
 export class Database extends Component {
     constructor(props){
         super(props);
@@ -14,7 +15,24 @@ export class Database extends Component {
         this.changeRenderCurrentDatabase = this.changeRenderCurrentDatabase.bind(this);
         this.renderCurrentDatabase = this.renderCurrentDatabase.bind(this);
         this.togglePlusSquare = this.togglePlusSquare.bind(this);
+        this.createDB = this.createDB.bind(this);
     }
+
+    createDB(e) {
+        e.preventDefault();
+        const DBname = document.querySelector('input[name="DBname"]').value;
+        var x = document.getElementById("exampleModal")
+        if(DBname.length !== 0){
+            e.preventDefault();
+            db.ref('/admins/' + this.props.userId + '/database/' + DBname).set({
+                0: 'init'
+            })
+        }
+        else{
+            alert("Chưa nhập tên Database !!!");
+        }
+    }
+
     componentWillMount(){
         db.ref('/admins/'+this.props.userId+'/database/').on('value', (snapshot)=>{
             let database = snapshot.val();
@@ -30,6 +48,8 @@ export class Database extends Component {
             })
         })
     }
+
+
     changeRenderCurrentDatabase(propKeyOfDB){
         this.setState({
             choseDB: propKeyOfDB
@@ -88,7 +108,7 @@ export class Database extends Component {
                             isLoading={this.state.isLoading}
                             userId={this.props.userId}
                             togglePlusSquare={this.togglePlusSquare}
-                            
+                            createDB={this.createDB}
                             />
         );
     }
