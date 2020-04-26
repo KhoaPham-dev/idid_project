@@ -25,13 +25,14 @@ export class Database extends Component {
 
     createDB(e) {
         e.preventDefault();
-        const DBname = document.querySelector('input[name="DBname"]').value;
+        const DBname = document.querySelector('input[name="DBname"]');
         var x = document.getElementById("exampleModal")
         if(DBname.length !== 0){
             e.preventDefault();
-            db.ref('/admins/' + this.props.userId + '/database/' + DBname).set({
+            db.ref('/admins/' + this.props.userId + '/database/' + DBname.value).set({
                 0: 'init'
             })
+            DBname.value = '';
             closeModal();
         }
         else{
