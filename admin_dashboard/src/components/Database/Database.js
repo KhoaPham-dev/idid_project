@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {db} from '../base';
 import {RenderDatabase} from './RenderDatabase';
 
-function closeModal(){
-    var close = document.getElementById("closeModal");
-    close.click();
+function closeModal(x){
+    var close = document.getElementsByClassName("closeModal")
+    close[x].children[0].click();
 }
 
 
@@ -21,6 +21,7 @@ export class Database extends Component {
         this.renderCurrentDatabase = this.renderCurrentDatabase.bind(this);
         this.togglePlusSquare = this.togglePlusSquare.bind(this);
         this.createDB = this.createDB.bind(this);
+        this.deleteDB = this.deleteDB.bind(this);
     }
 
     createDB(e) {
@@ -33,11 +34,17 @@ export class Database extends Component {
                 0: 'init'
             })
             DBname.value = '';
-            closeModal();
+            closeModal(0);
         }
         else{
             alert("Chưa nhập tên Database !!!");
         }
+    }
+
+    deleteDB() {
+        db.ref('/admins/' + this.props.userId + '/database/' + this.state.choseDB).set({
+        })
+        closeModal(1);
     }
 
     componentWillMount(){
@@ -116,6 +123,7 @@ export class Database extends Component {
                             userId={this.props.userId}
                             togglePlusSquare={this.togglePlusSquare}
                             createDB={this.createDB}
+                            deleteDB={this.deleteDB}
                             />
         );
     }
