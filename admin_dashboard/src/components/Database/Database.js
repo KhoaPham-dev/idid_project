@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import {db} from '../base';
 import {RenderDatabase} from './RenderDatabase';
 
+function closeModal(){
+    var close = document.getElementById("closeModal");
+    close.click();
+}
+
 
 export class Database extends Component {
     constructor(props){
@@ -27,6 +32,7 @@ export class Database extends Component {
             db.ref('/admins/' + this.props.userId + '/database/' + DBname).set({
                 0: 'init'
             })
+            closeModal();
         }
         else{
             alert("Chưa nhập tên Database !!!");

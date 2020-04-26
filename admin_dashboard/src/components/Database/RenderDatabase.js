@@ -39,8 +39,8 @@ export class RenderDatabase extends Component {
                                                     <input name="DBname" className="form-control" type="text" defaultValue="" />
                                                 </div>
                                                 <div className="modal-footer">
-                                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                    <button type="submit" className="btn btn-primary" >Tạo</button>
+                                                    <button type="button" id="closeModal" className="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button type="submit" className="btn btn-primary">Tạo</button>
                                                 </div>
                                             </form>
                                         </div>
