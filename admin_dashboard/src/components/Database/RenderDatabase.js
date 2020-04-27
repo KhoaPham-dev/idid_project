@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { LoopCircleLoading, PointSpreadLoading } from 'react-loadingg';
 import './RenderDatabase.css';
+
+
 export class RenderDatabase extends Component {
     handleChangeCurrentDatabase(e) {
         this.props.changeRenderCurrentDatabase(e.target.value)
@@ -16,13 +18,13 @@ export class RenderDatabase extends Component {
         return (
             <Container>
                 <Row>
-                    <Col xl={4}>
-                        <Row>
-                            <div>
+                    <Col xl={6}>
+                        <div className="container-btn-db">
+                            <div className="btn-db">
                                 {/* Button trigger modal */}
-                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#createDB">
-                                    Create Database
-                            </button>
+                                <button type="button" className="btn btn-primary btn-db-create" data-toggle="modal" data-target="#createDB">
+                                    Create DB
+                                </button>
                                 {/* Modal */}
                                 <div className="modal fade" id="createDB" tabIndex={-1} role="dialog" aria-labelledby="createDBLabel" aria-hidden="true">
                                     <div className="modal-dialog" role="document">
@@ -49,17 +51,17 @@ export class RenderDatabase extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="ml-2">
+                            <div className="btn-db">
                                 {/* Button trigger modal */}
-                                <button type="button" className="btn btn-danger " data-toggle="modal" data-target="#exampleModal">
+                                <button type="button" className="btn btn-danger btn-db-del" data-toggle="modal" data-target="#deleteDB">
                                     Delete DB
-                            </button>
+                                </button>
                                 {/* Modal */}
-                                <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div className="modal fade" id="deleteDB" tabIndex={-1} role="dialog" aria-labelledby="deleteDBlabel" aria-hidden="true">
                                     <div className="modal-dialog" role="document">
                                         <div className="modal-content">
                                             <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Delete DB</h5>
+                                                <h5 className="modal-title" id="deleteDBlabel">Delete DB</h5>
                                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
@@ -75,12 +77,36 @@ export class RenderDatabase extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </Row>
+                            <div className="btn-db">
+                                {/* Button trigger modal */}
+                                <button onClick={this.props.createQrCode} type="button" className="btn btn-success btn-db-scanner" data-toggle="modal" data-target="#qrDB">
+                                    Connect DB
+                                </button>
+                                {/* Modal */}
+                                <div className="modal fade" id="qrDB" tabIndex={-1} role="dialog" aria-labelledby="qrDBlabel" aria-hidden="true">
+                                    <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title" id="qrDBlabel">QRcode</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <p>Dùng QRcode để liên kết scanner và database <b>{this.props.choseDB}</b></p>
+                                                {this.props.database[this.props.choseDB] ? <img src={`https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=${this.props.database[this.props.choseDB]["qr-code"]}`} /> : <PointSpreadLoading/>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                            </div>
+                            </div>
                     </Col>
                     <Col xl={5}>
                         <Form>
-                            <Form.Group controlId="exampleForm.SelectCustom">
-                                <Form.Control as="select" custom onChange={this.handleChangeCurrentDatabase.bind(this)}>
+                            <Form.Group controlId="selectedDB">
+                                <Form.Control  as="select" value={this.props.choseDB} onChange={this.handleChangeCurrentDatabase.bind(this)}>
                                     {databaseKeys ? databaseKeys.map(key => {
                                         return <option key={key} value={key}>{key}</option>
                                     }) : null}

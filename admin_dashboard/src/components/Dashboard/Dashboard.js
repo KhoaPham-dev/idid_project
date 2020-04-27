@@ -40,7 +40,7 @@ export class Dashboard extends React.Component{
             currentUser: user,
             userId: user.uid,
             isLoading: false,
-            renderContent: document.cookie.substring(6) || "Database"
+            renderContent: sessionStorage.getItem("path") || "Database"
           })
         }
       })
@@ -58,7 +58,7 @@ export class Dashboard extends React.Component{
 
   
   changeRenderContent(content){
-    document.cookie=`path=/${content}`;
+    sessionStorage.setItem("path",content);
     this.setState({
       renderContent: content
     })

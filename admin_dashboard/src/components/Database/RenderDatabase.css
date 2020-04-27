@@ -5,3 +5,14 @@ ul{
     cursor: pointer;
     margin-right: 2px;
 }
+.btn-db-create,.btn-db-del,.btn-db-scanner {
+    margin: 5px 3px;
+    display: inline-block;
+}
+.btn-db{
+    display: inline-block;
+
+}
+.container-btn-db{
+    text-align: center;
+}

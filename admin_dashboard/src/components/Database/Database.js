@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {db} from '../base';
 import {RenderDatabase} from './RenderDatabase';
-
+import { store } from 'react-notifications-component';
 function closeModal(x){
     var close = document.getElementsByClassName("closeModal")
     close[x].children[0].click();
@@ -22,31 +22,69 @@ export class Database extends Component {
         this.togglePlusSquare = this.togglePlusSquare.bind(this);
         this.createDB = this.createDB.bind(this);
         this.deleteDB = this.deleteDB.bind(this);
+        this.createQrCode = this.createQrCode.bind(this);
     }
 
     createDB(e) {
         e.preventDefault();
         const DBname = document.querySelector('input[name="DBname"]');
-        var x = document.getElementById("exampleModal")
-        if(DBname.length !== 0){
-            e.preventDefault();
+        
+        var x = document.getElementById("createDBLabel")
+        if(DBname.value.length !== 0 && !this.state.database.hasOwnProperty(DBname.value)){
+            
             db.ref('/admins/' + this.props.userId + '/database/' + DBname.value).set({
                 0: 'init'
             })
-            DBname.value = '';
+            
             closeModal(0);
+            sessionStorage.setItem("chdb", DBname.value);
+            this.setState({
+                choseDB: DBname.value
+            })
+            DBname.value = '';
+            store.addNotification({
+                title: "Thông báo",
+                message: "Bạn đã tạo database thành công!",
+                type: "success",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 1000
+                }
+              });
         }
         else{
-            alert("Chưa nhập tên Database !!!");
+            alert("Chưa nhập tên Database hoặc đã có database này rồi !!!");
         }
     }
 
     deleteDB() {
+        sessionStorage.removeItem('chdb');
         db.ref('/admins/' + this.props.userId + '/database/' + this.state.choseDB).set({
         })
         closeModal(1);
+        store.addNotification({
+            title: "Thông báo",
+            message: "Bạn đã xóa thành công!",
+            type: "success",
+            insert: "bottom",
+            container: "bottom-center",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 1000
+            }
+          });
+          
     }
-
+    createQrCode(){
+        let DBname = this.state.choseDB;
+        db.ref('/admins/' + this.props.userId + '/database/' + DBname).update({
+            "qr-code": `admins/${this.props.userId}/database/${DBname}`
+        }) 
+    }
     componentWillMount(){
         db.ref('/admins/'+this.props.userId+'/database/').on('value', (snapshot)=>{
             let database = snapshot.val();
@@ -55,9 +93,10 @@ export class Database extends Component {
                 firstDB = i;
                 break;
             }
+            
             this.setState({
                 database: database,
-                choseDB: firstDB,
+                choseDB: sessionStorage.getItem('chdb') || firstDB,
                 isLoading: false
             })
         })
@@ -65,6 +104,7 @@ export class Database extends Component {
 
 
     changeRenderCurrentDatabase(propKeyOfDB){
+        sessionStorage.setItem("chdb", propKeyOfDB);
         this.setState({
             choseDB: propKeyOfDB
         })
@@ -124,6 +164,7 @@ export class Database extends Component {
                             togglePlusSquare={this.togglePlusSquare}
                             createDB={this.createDB}
                             deleteDB={this.deleteDB}
+                            createQrCode={this.createQrCode}
                             />
         );
     }
