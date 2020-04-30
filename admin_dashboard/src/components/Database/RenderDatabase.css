@@ -8,6 +8,7 @@ ul{
 .btn-db-create,.btn-db-del,.btn-db-scanner {
     margin: 5px 3px;
     display: inline-block;
+    width: 7em;
 }
 .btn-db{
     display: inline-block;
@@ -15,4 +16,66 @@ ul{
 }
 .container-btn-db{
     text-align: center;
+}
+.chose-db-name{
+    margin: 0 auto;
+}
+.current-db-tree{
+    margin-top: 10px;
+}
+.hide{
+    display: none;
+}
+@media only screen and (min-width: 1350px){
+    .current-db-tree li{
+        font-size: 23px;
+    }
+}
+
+@media only screen and (max-width: 1350px){
+    .current-db-tree li{
+        font-size: 19px;
+    }
+}
+@media only screen and (max-width: 1150px){
+    .current-db-tree li{
+        font-size: 16px;
+    }
+}
+@media only screen and (max-width: 950px){
+    .current-db-tree li{
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width: 750px){
+    .current-db-tree li{
+        font-size: 10px;
+    }
+    .current-db-tree {
+        margin-left: -20px;
+    }
+}
+@media only screen and (max-width: 550px){
+    .current-db-tree li{
+        font-size: 7px;
+    }
+    .current-db-tree{
+        margin-left: -25px;
+    }
+}
+@media only screen and (max-width: 350px){
+    .current-db-tree li{
+        font-size: 5px;
+    }
+    .current-db-tree {
+        margin-left: -30px;
+    }
+}
+@media only screen and (max-width: 150px){
+    .current-db-tree li{
+        font-size: 3px;
+    }
+    .current-db-tree {
+        margin-left: -35px;
+    }
 }

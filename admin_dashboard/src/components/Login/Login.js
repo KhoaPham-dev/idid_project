@@ -56,7 +56,7 @@ export class Login extends React.Component{
         document.querySelector("form").reset();
       })
   }
-  componentWillMount(){
+  componentDidMount(){
     this.removeAuthListener = app.auth().onAuthStateChanged((user)=>{
       if(user){
       //check if this account is user or admin

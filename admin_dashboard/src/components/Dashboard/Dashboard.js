@@ -18,7 +18,7 @@ export class Dashboard extends React.Component{
     this.changeRenderContent = this.changeRenderContent.bind(this);
   }
   
-  componentWillMount(){
+  componentDidMount(){
     this.removeAuthListener = app.auth().onAuthStateChanged(async(user) => {
       //Get contests infors
       if (user) {
