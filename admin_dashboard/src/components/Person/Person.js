@@ -27,7 +27,7 @@ export class Person extends Component {
 
         this.changeProfile = this.changeProfile.bind(this);
         this.changePassword = this.changePassword.bind(this);
-        this.changeEmail = this.changeEmail.bind(this);
+        //this.changeEmail = this.changeEmail.bind(this);
         this.handleClickChangeProfilePicture = this.handleClickChangeProfilePicture.bind(this);
         this.handleChangePreviewProfilePicture = this.handleChangePreviewProfilePicture.bind(this);
     }
@@ -51,13 +51,16 @@ export class Person extends Component {
 
     changeProfile(event) {
         event.preventDefault();
-
-        const fullname = document.querySelector('input[name="NewFullname"]').value;
-        const phoneNumber = document.querySelector('input[name="NewPhoneNumber"]').value;
+        const fullname = document.querySelector('input[name="newFullname"]').value;
+        const phoneNumber = document.querySelector('input[name="newPhonenumber"]').value;
+        const brand = document.querySelector('input[name="newBrand"]').value;
+        const fanpage = document.querySelector('input[name="newFanpage"]').value;
 
         var newDatas = {
             fullname: fullname,
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            brand: brand,
+            fanpage: fanpage
         };
 
         var updates = {};
@@ -75,29 +78,29 @@ export class Person extends Component {
         return user.reauthenticateWithCredential(cred);
     }
     
-    changeEmail(event) {
-        event.preventDefault();
+    // changeEmail(event) {
+    //     event.preventDefault();
 
-        const password = document.querySelector('input[name="password"]').value;
-        const newEmail = document.querySelector('input[name="newEmail"]').value;
+    //     const password = document.querySelector('input[name="password"]').value;
+    //     const newEmail = document.querySelector('input[name="newEmail"]').value;
 
-        this.checkCurrentPassword(password).then(() => {
-            var user = app.auth().currentUser;
+    //     this.checkCurrentPassword(password).then(() => {
+    //         var user = app.auth().currentUser;
 
-            user.updateEmail(newEmail).then(()=> {
-                alert("Email đã được thay đổi ^^");
+    //         user.updateEmail(newEmail).then(()=> {
+    //             alert("Email đã được thay đổi ^^");
 
-                var updates = {};
+    //             var updates = {};
 
-                updates['/admins/' + this.state.uid + '/' + "email"] = newEmail;
-                return app.database().ref().update(updates);
-            }).catch(function (error) {
-                alert(error.message);
-            });
-        }).catch(() => {
-            alert("Sai mật khẩu cũ !!!");
-        });
-    }
+    //             updates['/admins/' + this.state.uid + '/' + "email"] = newEmail;
+    //             return app.database().ref().update(updates);
+    //         }).catch(function (error) {
+    //             alert(error.message);
+    //         });
+    //     }).catch(() => {
+    //         alert("Sai mật khẩu cũ !!!");
+    //     });
+    // }
 
     changePassword(event) {
         event.preventDefault();
